@@ -17,7 +17,7 @@ class _BottomnavbarState extends State<Bottomnavbar> {
   final List<Widget> body = const [Home(), Search(), Add(), Notes()];
 
   final List<Color> buttonColors = [
-    Color.fromARGB(196, 161, 72, 249),
+    Color.fromARGB(251, 160, 72, 249),
     Color.fromARGB(215, 246, 84, 173),
     Color.fromARGB(217, 54, 218, 128),
     Color.fromARGB(187, 223, 208, 39),

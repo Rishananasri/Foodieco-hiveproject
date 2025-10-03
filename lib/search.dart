@@ -10,6 +10,47 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: Color.fromARGB(216, 255, 193, 227));
+    return Scaffold(
+      // backgroundColor: Color.fromARGB(216, 255, 193, 227),
+      body: Stack(
+        children: [
+          SizedBox(
+            height: 910,
+            width: 500,
+            child: Image.asset(
+              // "assets/images/pink1.jpeg",
+              "assets/images/pink2.jpeg",
+              fit: BoxFit.cover,
+            ),
+          ),
+
+          Column(
+            children: [
+              SizedBox(height: 70),
+              Padding(
+                padding: const EdgeInsets.all(25),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(80, 255, 255, 255),
+                    borderRadius: BorderRadius.circular(60),
+                    border: Border.all(color: Colors.white, width: 1),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 30),
+                    child: TextField(
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        suffixIcon: Icon(Icons.search),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }

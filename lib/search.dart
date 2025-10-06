@@ -18,8 +18,9 @@ class _SearchState extends State<Search> {
             height: 910,
             width: 500,
             child: Image.asset(
-              // "assets/images/pink1.jpeg",
               "assets/images/pink2.jpeg",
+              color: Colors.white.withOpacity(0.6),
+              colorBlendMode: BlendMode.softLight,
               fit: BoxFit.cover,
             ),
           ),

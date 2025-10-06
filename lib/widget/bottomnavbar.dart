@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:pr/add.dart';
-import 'package:pr/home.dart';
+import 'package:pr/add.dart';import 'package:pr/home.dart';
 import 'package:pr/notes.dart';
 import 'package:pr/search.dart';
 
@@ -18,9 +17,9 @@ class _BottomnavbarState extends State<Bottomnavbar> {
 
   final List<Color> buttonColors = [
     Color.fromARGB(251, 160, 72, 249),
-    Color.fromARGB(215, 246, 84, 173),
-    Color.fromARGB(217, 54, 218, 128),
-    Color.fromARGB(187, 223, 208, 39),
+    Color.fromARGB(255, 246, 84, 173),
+    Color.fromARGB(255, 60, 216, 68),
+    Color.fromARGB(255, 214, 198, 21),
   ];
 
   @override

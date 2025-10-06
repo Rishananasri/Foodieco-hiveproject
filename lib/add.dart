@@ -30,107 +30,174 @@ class _AddState extends State<Add> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(217, 184, 242, 210),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 50),
-            Padding(
-              padding: const EdgeInsets.only(left: 300),
-              child: ElevatedButton(
-                onPressed: () {},
-                child: const Text("Save"),
-              ),
+      // backgroundColor: const Color.fromARGB(217, 184, 242, 210),
+      body: Stack(
+        children: [
+          SizedBox(
+            height: 910,
+            width: 420,
+            child: Image.asset(
+              "assets/images/Another avacodo.jpeg",
+              color: Colors.white.withOpacity(0.7),
+              colorBlendMode: BlendMode.dstATop,
+              fit: BoxFit.cover,
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: Container(
-                height: 150,
-                width: 150,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      offset: const Offset(7, 7),
-                      blurRadius: 10,
-                      color: const Color.fromARGB(154, 0, 0, 0),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 50),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 300),
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: const Color.fromARGB(255, 72, 71, 71),
+                        backgroundColor: const Color.fromARGB(
+                          255,
+                          245,
+                          246,
+                          247,
+                        ),
+                      ),
+                      child: const Text("Save"),
                     ),
-                  ],
-                ),
-              ),
-            ),
+                  ),
 
-            Container(
-              height: 60,
-              width: 350,
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    offset: const Offset(7, 7),
-                    blurRadius: 10,
-                    color: const Color.fromARGB(154, 0, 0, 0),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 20),
+                    child: Container(
+                      height: 150,
+                      width: 150,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            offset: const Offset(7, 7),
+                            blurRadius: 10,
+                            color: const Color.fromARGB(154, 0, 0, 0),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ],
-              ),
-              child: DropdownButton<String>(
-                value: selectedValue,
-                hint: const Text("Select an option"),
-                isExpanded: true,
-                underline: const SizedBox(),
-                items: items.map((String item) {
-                  return DropdownMenuItem<String>(
-                    value: item,
-                    child: Text(item),
-                  );
-                }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    selectedValue = value;
-                  });
-                },
-              ),
-            ),
 
-            const SizedBox(height: 30),
-            Container(
-              height: 60,
-              width: 350,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    offset: const Offset(7, 7),
-                    blurRadius: 10,
-                    color: const Color.fromARGB(154, 0, 0, 0),
+                  Container(
+                    height: 60,
+                    width: 350,
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          offset: const Offset(7, 7),
+                          blurRadius: 10,
+                          color: const Color.fromARGB(154, 0, 0, 0),
+                        ),
+                      ],
+                    ),
+                    child: DropdownButton<String>(
+                      value: selectedValue,
+                      hint: const Text("Select Category"),
+                      isExpanded: true,
+                      underline: const SizedBox(),
+                      items: items.map((String item) {
+                        return DropdownMenuItem<String>(
+                          value: item,
+                          child: Text(item),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedValue = value;
+                        });
+                      },
+                    ),
+                  ),
+
+                  const SizedBox(height: 30),
+                  Container(
+                    height: 60,
+                    width: 350,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          offset: const Offset(7, 7),
+                          blurRadius: 10,
+                          color: const Color.fromARGB(154, 0, 0, 0),
+                        ),
+                      ],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Type recipe name",
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  Container(
+                    height: 390,
+                    width: 350,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          offset: const Offset(7, 7),
+                          blurRadius: 10,
+                          color: const Color.fromARGB(154, 0, 0, 0),
+                        ),
+                      ],
+                    ),
+                    child: Stack(
+                      children: [
+                        ListView.builder(
+                          itemCount: 40,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              height: 40,
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                    color: Colors.grey,
+                                    width: 0.7,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(12.0),
+                          child: TextField(
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                            style: const TextStyle(fontSize: 16, height: 2),
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              hintText: "Start writing your recipe here...",
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 30),
-            Container(
-              height: 390,
-              width: 350,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white,
-                boxShadow: [
-                  BoxShadow(
-                    offset: const Offset(7, 7),
-                    blurRadius: 10,
-                    color: const Color.fromARGB(154, 0, 0, 0),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

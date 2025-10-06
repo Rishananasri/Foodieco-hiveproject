@@ -21,7 +21,6 @@ class _HomeState extends State<Home> {
               SizedBox(height: 20),
               Container(
                 color: Color.fromARGB(196, 221, 192, 251),
-
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -45,7 +44,7 @@ class _HomeState extends State<Home> {
                       SizedBox(height: 40),
                       SizedBox(height: 220, child: CarouselDemo()),
                       SizedBox(height: 50),
-                      category(),
+                      category(context),
                       SizedBox(height: 70),
                     ],
                   ),

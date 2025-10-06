@@ -9,6 +9,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  bool _isPasswordHidden = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +35,7 @@ class _LoginState extends State<Login> {
               ),
             ),
           ),
+
           Center(
             child: Container(
               height: 350,
@@ -51,6 +54,7 @@ class _LoginState extends State<Login> {
               child: Column(
                 children: [
                   SizedBox(height: 60),
+
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       vertical: 10,
@@ -62,24 +66,25 @@ class _LoginState extends State<Login> {
                         borderRadius: BorderRadius.circular(15),
                         color: const Color.fromARGB(66, 255, 255, 255),
                         border: Border.all(color: Colors.white, width: 1),
-                        boxShadow: [
-                          BoxShadow(
-                            offset: Offset(8, 9),
-                            color: const Color.fromARGB(15, 0, 0, 0),
-                            blurRadius: 10,
-                          ),
-                        ],
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(20),
+                        padding: const EdgeInsets.only(left: 20),
                         child: TextField(
                           style: TextStyle(color: Colors.white, fontSize: 18),
-                          decoration: InputDecoration(border: InputBorder.none),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Username',
+                            hintStyle: TextStyle(
+                              color: const Color.fromARGB(255, 186, 184, 184),
+                            ),
+                          ),
                         ),
                       ),
                     ),
                   ),
+
                   SizedBox(height: 10),
+
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       vertical: 10,
@@ -91,23 +96,51 @@ class _LoginState extends State<Login> {
                         borderRadius: BorderRadius.circular(15),
                         color: const Color.fromARGB(66, 255, 255, 255),
                         border: Border.all(color: Colors.white, width: 1),
-                        boxShadow: [
-                          BoxShadow(
-                            offset: Offset(8, 9),
-                            color: const Color.fromARGB(15, 0, 0, 0),
-                            blurRadius: 10,
-                          ),
-                        ],
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: TextField(
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                          decoration: InputDecoration(border: InputBorder.none),
+                        padding: const EdgeInsets.only(left: 20, right: 10),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                obscureText: _isPasswordHidden,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                ),
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'Password',
+                                  hintStyle: TextStyle(
+                                    color: const Color.fromARGB(
+                                      255,
+                                      186,
+                                      184,
+                                      184,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                _isPasswordHidden
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: const Color.fromARGB(255, 186, 184, 184),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _isPasswordHidden = !_isPasswordHidden;
+                                });
+                              },
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
+
                   TextButton(
                     onPressed: () {
                       Navigator.pushReplacement(

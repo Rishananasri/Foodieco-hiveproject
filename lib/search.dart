@@ -18,7 +18,7 @@ class _SearchState extends State<Search> {
             height: 910,
             width: 500,
             child: Image.asset(
-              "assets/images/pink2.jpeg",
+              "assets/images/pinki.jpeg",
               color: Colors.white.withOpacity(0.6),
               colorBlendMode: BlendMode.softLight,
               fit: BoxFit.cover,
@@ -41,6 +41,7 @@ class _SearchState extends State<Search> {
                     child: TextField(
                       style: TextStyle(color: Colors.white, fontSize: 18),
                       decoration: InputDecoration(
+                        hintText: "Search...",
                         border: InputBorder.none,
                         suffixIcon: Icon(Icons.search),
                       ),

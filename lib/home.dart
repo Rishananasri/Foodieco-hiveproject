@@ -13,14 +13,18 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(196, 217, 179, 255),
+      // backgroundColor: Color.fromARGB(196, 217, 179, 255),
       body: Stack(
         children: [
+          SizedBox(
+            height: 900,
+            width: 420,
+            child: Image.asset("assets/images/purple.jpeg", fit: BoxFit.fill),
+          ),
           Column(
             children: [
               SizedBox(height: 20),
               Container(
-                color: Color.fromARGB(196, 221, 192, 251),
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -28,8 +32,8 @@ class _HomeState extends State<Home> {
                     Padding(
                       padding: const EdgeInsets.only(top: 30),
                       child: Image.asset(
-                        "assets/images/logoname-removebg-preview.png",
-                        height: 50,
+                        "assets/images/Foodieco-removebg-preview.png",
+                        height: 90,
                         width: 150,
                         fit: BoxFit.contain,
                       ),

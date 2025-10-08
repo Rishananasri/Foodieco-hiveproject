@@ -24,15 +24,15 @@ class Notes extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 70),
                 child: Row(
                   children: [
-                    SizedBox(width: 30),
-                    Text(
+                    const SizedBox(width: 30),
+                    const Text(
                       "Notes",
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 22,
                       ),
                     ),
-                    SizedBox(width: 240),
+                    const Spacer(),
                     IconButton(
                       icon: const Icon(Icons.check, size: 28),
                       onPressed: () {
@@ -41,11 +41,12 @@ class Notes extends StatelessWidget {
                         );
                       },
                     ),
+                    const SizedBox(width: 20),
                   ],
                 ),
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Center(
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 40),
@@ -63,37 +64,17 @@ class Notes extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: Stack(
-                      children: [
-                        ListView.builder(
-                          itemCount: 40,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              height: 40,
-                              decoration: const BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: Colors.grey,
-                                    width: 0.7,
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
+                    child: const Padding(
+                      padding: EdgeInsets.all(12.0),
+                      child: TextField(
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        style: TextStyle(fontSize: 16, height: 2),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Start writing your notes...",
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: TextField(
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                            style: const TextStyle(fontSize: 16, height: 2),
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "Start writing your notes...",
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),

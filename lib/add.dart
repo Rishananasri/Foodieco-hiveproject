@@ -145,7 +145,9 @@ class _AddState extends State<Add> {
                       ),
                     ),
                   ),
+
                   const SizedBox(height: 30),
+
                   Container(
                     height: 390,
                     width: 350,
@@ -160,37 +162,17 @@ class _AddState extends State<Add> {
                         ),
                       ],
                     ),
-                    child: Stack(
-                      children: [
-                        ListView.builder(
-                          itemCount: 40,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              height: 40,
-                              decoration: const BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                    color: Colors.grey,
-                                    width: 0.7,
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
+                    child: const Padding(
+                      padding: EdgeInsets.all(12.0),
+                      child: TextField(
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        style: TextStyle(fontSize: 16, height: 2),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Start writing your recipe here...",
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: TextField(
-                            keyboardType: TextInputType.multiline,
-                            maxLines: null,
-                            style: const TextStyle(fontSize: 16, height: 2),
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: "Start writing your recipe here...",
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ],

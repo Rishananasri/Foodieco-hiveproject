@@ -49,7 +49,7 @@ class _AddState extends State<Add> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 50),
+                   SizedBox(height: 50),
                   Padding(
                     padding: const EdgeInsets.only(left: 300),
                     child: ElevatedButton(
@@ -120,7 +120,7 @@ class _AddState extends State<Add> {
                     ),
                   ),
 
-                  const SizedBox(height: 30),
+                   SizedBox(height: 30),
                   Container(
                     height: 60,
                     width: 350,
@@ -146,7 +146,7 @@ class _AddState extends State<Add> {
                     ),
                   ),
 
-                  const SizedBox(height: 30),
+                   SizedBox(height: 30),
 
                   Container(
                     height: 390,

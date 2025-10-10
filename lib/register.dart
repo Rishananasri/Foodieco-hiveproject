@@ -1,45 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:pr/register.dart';
+import 'package:pr/login.dart';
 import 'package:pr/widget/bottomnavbar.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class Register extends StatefulWidget {
+  const Register({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _LoginState extends State<Login> {
+class _RegisterState extends State<Register> {
   bool _isPasswordHidden = true;
+  bool _isConfirmPasswordHidden = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color.fromARGB(196, 217, 179, 255),
-                  Color.fromARGB(211, 201, 163, 255),
-                  Color.fromARGB(216, 255, 193, 227),
-                  Color.fromARGB(154, 255, 163, 197),
-                  Color.fromARGB(164, 255, 248, 240),
-                  Color.fromARGB(217, 184, 242, 210),
-                  Color.fromARGB(224, 168, 230, 207),
-                  Color.fromARGB(189, 255, 248, 176),
-                  Color.fromARGB(215, 255, 214, 165),
-                ],
-              ),
-            ),
+          SizedBox(
+            height: 910,
+            width: 420,
+            child: Image.asset("assets/images/rg.bg1.png", fit: BoxFit.cover),
           ),
-
           Center(
             child: Container(
-              height: 350,
+              height: 380,
               width: 350,
               decoration: BoxDecoration(
                 color: const Color.fromARGB(112, 255, 255, 255),
@@ -55,12 +41,8 @@ class _LoginState extends State<Login> {
               child: Column(
                 children: [
                   SizedBox(height: 60),
-
                   Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 10,
-                      horizontal: 20,
-                    ),
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                     child: Container(
                       height: 50,
                       decoration: BoxDecoration(
@@ -79,14 +61,12 @@ class _LoginState extends State<Login> {
                             color: const Color.fromARGB(255, 186, 184, 184),
                           ),
                           hintStyle: TextStyle(
-                            color: const Color.fromARGB(255, 186, 184, 184),
+                            color: Color.fromARGB(255, 186, 184, 184),
                           ),
                         ),
                       ),
                     ),
                   ),
-
-                  SizedBox(height: 10),
 
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -123,12 +103,7 @@ class _LoginState extends State<Login> {
                                   ),
                                 ),
                                 hintStyle: TextStyle(
-                                  color: const Color.fromARGB(
-                                    255,
-                                    186,
-                                    184,
-                                    184,
-                                  ),
+                                  color: Color.fromARGB(255, 186, 184, 184),
                                 ),
                               ),
                             ),
@@ -138,7 +113,7 @@ class _LoginState extends State<Login> {
                               _isPasswordHidden
                                   ? Icons.visibility_off
                                   : Icons.visibility,
-                              color: const Color.fromARGB(255, 186, 184, 184),
+                              color: Color.fromARGB(255, 186, 184, 184),
                             ),
                             onPressed: () {
                               setState(() {
@@ -151,6 +126,66 @@ class _LoginState extends State<Login> {
                     ),
                   ),
 
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 20,
+                    ),
+                    child: Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: const Color.fromARGB(66, 255, 255, 255),
+                        border: Border.all(color: Colors.white, width: 1),
+                      ),
+
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              obscureText: _isConfirmPasswordHidden,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                              ),
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Confirm Password',
+                                prefixIcon: Icon(
+                                  Icons.lock_outline,
+                                  color: const Color.fromARGB(
+                                    255,
+                                    186,
+                                    184,
+                                    184,
+                                  ),
+                                ),
+                                hintStyle: TextStyle(
+                                  color: Color.fromARGB(255, 186, 184, 184),
+                                ),
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              _isConfirmPasswordHidden
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: Color.fromARGB(255, 186, 184, 184),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _isConfirmPasswordHidden =
+                                    !_isConfirmPasswordHidden;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(height: 10),
                   TextButton(
                     onPressed: () {
                       Navigator.pushReplacement(
@@ -175,9 +210,9 @@ class _LoginState extends State<Login> {
                       ),
                       child: Center(
                         child: Text(
-                          "Login",
+                          "Sign in",
                           style: TextStyle(
-                            color: const Color.fromARGB(255, 186, 184, 184),
+                            color: Color.fromARGB(255, 186, 184, 184),
                             fontSize: 15,
                           ),
                         ),
@@ -188,32 +223,30 @@ class _LoginState extends State<Login> {
               ),
             ),
           ),
+
           Positioned(
-            top: 200,
+            top: 190,
             left: 90,
             child: Image.asset(
               "assets/images/Foodieco-removebg-preview.png",
               height: 50,
             ),
           ),
+
+          Positioned(top: 680, left: 90, child: Text("Don’t have an account?")),
           Positioned(
-            top: 650,
-            left: 90,
-            child: Text("Don’t have an account?              now!"),
-          ),
-          Positioned(
-            top: 650,
-            left: 241,
+            top: 680,
+            left: 240,
             child: InkWell(
               onTap: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => Register()),
+                  MaterialPageRoute(builder: (context) => Login()),
                 );
               },
               child: Text(
-                "Sign up",
-                style: TextStyle(color: const Color.fromARGB(255, 0, 94, 255)),
+                "Login",
+                style: TextStyle(color: Color.fromARGB(255, 0, 94, 255)),
               ),
             ),
           ),

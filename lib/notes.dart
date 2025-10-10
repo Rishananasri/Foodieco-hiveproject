@@ -67,7 +67,6 @@ class Notes extends StatelessWidget {
                     child: const Padding(
                       padding: EdgeInsets.all(12.0),
                       child: TextField(
-                        keyboardType: TextInputType.multiline,
                         maxLines: null,
                         style: TextStyle(fontSize: 16, height: 2),
                         decoration: InputDecoration(

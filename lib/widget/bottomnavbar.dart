@@ -15,7 +15,7 @@ class Bottomnavbar extends StatefulWidget {
 
 class _BottomnavbarState extends State<Bottomnavbar> {
   int _currentIndex = 0;
-   List<Widget> body = [Home(), Search(), Add(), Notes(), Chart()];
+  List<Widget> body = [Home(), Search(), Add(), Notes(), Chart()];
 
   final List<Color> buttonColors = [
     Color.fromARGB(251, 160, 72, 249),

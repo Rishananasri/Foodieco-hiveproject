@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pr/login.dart';
+import 'package:pr/screens/login.dart';
 import 'package:pr/widget/bottomnavbar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -13,15 +14,19 @@ class _RegisterState extends State<Register> {
   bool _isPasswordHidden = true;
   bool _isConfirmPasswordHidden = true;
 
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
           SizedBox(
-            height: 910,
+            height: 925,
             width: 420,
-            child: Image.asset("assets/images/rg.bg1.png", fit: BoxFit.cover),
+            child: Image.asset("assets/images/log.bg.jpeg", fit: BoxFit.cover),
           ),
           Center(
             child: Container(
@@ -32,7 +37,7 @@ class _RegisterState extends State<Register> {
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    offset: Offset(5, 5),
+                    offset: const Offset(5, 5),
                     blurRadius: 10,
                     color: const Color.fromARGB(32, 0, 0, 0),
                   ),
@@ -40,34 +45,7 @@ class _RegisterState extends State<Register> {
               ),
               child: Column(
                 children: [
-                  SizedBox(height: 60),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                    child: Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        color: const Color.fromARGB(66, 255, 255, 255),
-                        border: Border.all(color: Colors.white, width: 1),
-                      ),
-
-                      child: TextField(
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: 'Username',
-                          prefixIcon: Icon(
-                            Icons.person,
-                            color: const Color.fromARGB(255, 186, 184, 184),
-                          ),
-                          hintStyle: TextStyle(
-                            color: Color.fromARGB(255, 186, 184, 184),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-
+                  const SizedBox(height: 60),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       vertical: 10,
@@ -80,30 +58,54 @@ class _RegisterState extends State<Register> {
                         color: const Color.fromARGB(66, 255, 255, 255),
                         border: Border.all(color: Colors.white, width: 1),
                       ),
-
+                      child: TextField(
+                        controller: usernameController,
+                        style: const TextStyle(
+                          color: Color.fromARGB(255, 60, 60, 60),
+                          fontSize: 18,
+                        ),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Username',
+                          prefixIcon: Icon(
+                            Icons.person,
+                            color: Color.fromARGB(255, 158, 157, 157),
+                          ),
+                          hintStyle: TextStyle(
+                            color: Color.fromARGB(255, 158, 157, 157),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    child: Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: const Color.fromARGB(66, 255, 255, 255),
+                        border: Border.all(color: Colors.white, width: 1),
+                      ),
                       child: Row(
                         children: [
                           Expanded(
                             child: TextField(
+                              controller: passwordController,
                               obscureText: _isPasswordHidden,
-                              style: TextStyle(
-                                color: Colors.white,
+                              style: const TextStyle(
+                                color: Color.fromARGB(255, 60, 60, 60),
                                 fontSize: 18,
                               ),
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Password',
                                 prefixIcon: Icon(
                                   Icons.lock_outline,
-                                  color: const Color.fromARGB(
-                                    255,
-                                    186,
-                                    184,
-                                    184,
-                                  ),
+                                  color: Color.fromARGB(255, 158, 157, 157),
                                 ),
                                 hintStyle: TextStyle(
-                                  color: Color.fromARGB(255, 186, 184, 184),
+                                  color: Color.fromARGB(255, 158, 157, 157),
                                 ),
                               ),
                             ),
@@ -113,7 +115,7 @@ class _RegisterState extends State<Register> {
                               _isPasswordHidden
                                   ? Icons.visibility_off
                                   : Icons.visibility,
-                              color: Color.fromARGB(255, 186, 184, 184),
+                              color: const Color.fromARGB(255, 158, 157, 157),
                             ),
                             onPressed: () {
                               setState(() {
@@ -125,7 +127,6 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                   ),
-
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       vertical: 10,
@@ -138,30 +139,25 @@ class _RegisterState extends State<Register> {
                         color: const Color.fromARGB(66, 255, 255, 255),
                         border: Border.all(color: Colors.white, width: 1),
                       ),
-
                       child: Row(
                         children: [
                           Expanded(
                             child: TextField(
+                              controller: confirmController,
                               obscureText: _isConfirmPasswordHidden,
-                              style: TextStyle(
-                                color: Colors.white,
+                              style: const TextStyle(
+                                color: Color.fromARGB(255, 60, 60, 60),
                                 fontSize: 18,
                               ),
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Confirm Password',
                                 prefixIcon: Icon(
                                   Icons.lock_outline,
-                                  color: const Color.fromARGB(
-                                    255,
-                                    186,
-                                    184,
-                                    184,
-                                  ),
+                                  color: Color.fromARGB(255, 158, 157, 157),
                                 ),
                                 hintStyle: TextStyle(
-                                  color: Color.fromARGB(255, 186, 184, 184),
+                                  color: Color.fromARGB(255, 158, 157, 157),
                                 ),
                               ),
                             ),
@@ -171,7 +167,7 @@ class _RegisterState extends State<Register> {
                               _isConfirmPasswordHidden
                                   ? Icons.visibility_off
                                   : Icons.visibility,
-                              color: Color.fromARGB(255, 186, 184, 184),
+                              color: const Color.fromARGB(255, 158, 157, 157),
                             ),
                             onPressed: () {
                               setState(() {
@@ -184,13 +180,70 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                   ),
-
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   TextButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      String username = usernameController.text.trim();
+                      String password = passwordController.text.trim();
+                      String confirm = confirmController.text.trim();
+
+                      if (username.isEmpty ||
+                          password.isEmpty ||
+                          confirm.isEmpty) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text("Incomplete Details"),
+                              content: const Text("Please enter all details."),
+                              actions: [
+                                TextButton(
+                                  child: const Text("OK"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                        return;
+                      }
+
+                      if (password != confirm) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              content: const Text(
+                                "Passwords do not match. Please try again.",
+                              ),
+                              actions: [
+                                TextButton(
+                                  child: const Text("OK"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                        return;
+                      }
+
+                      SharedPreferences pref =
+                          await SharedPreferences.getInstance();
+                      await pref.setBool("isRegistered", true);
+                      await pref.setString("username", username);
+                      await pref.setString("password", password);
+                      await pref.setBool("isLoggedIn", true);
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => Bottomnavbar()),
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              Bottomnavbar(justLoggedIn: true),
+                        ),
                       );
                     },
                     child: Container(
@@ -200,19 +253,19 @@ class _RegisterState extends State<Register> {
                         color: const Color.fromARGB(92, 255, 255, 255),
                         borderRadius: BorderRadius.circular(60),
                         border: Border.all(width: 1, color: Colors.white),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             offset: Offset(8, 8),
-                            color: const Color.fromARGB(15, 0, 0, 0),
+                            color: Color.fromARGB(15, 0, 0, 0),
                             blurRadius: 10,
                           ),
                         ],
                       ),
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           "Sign in",
                           style: TextStyle(
-                            color: Color.fromARGB(255, 186, 184, 184),
+                            color: Color.fromARGB(255, 64, 64, 64),
                             fontSize: 15,
                           ),
                         ),
@@ -223,7 +276,6 @@ class _RegisterState extends State<Register> {
               ),
             ),
           ),
-
           Positioned(
             top: 190,
             left: 90,
@@ -232,22 +284,29 @@ class _RegisterState extends State<Register> {
               height: 50,
             ),
           ),
-
-          Positioned(top: 680, left: 90, child: Text("Don’t have an account?")),
           Positioned(
             top: 680,
-            left: 240,
-            child: InkWell(
-              onTap: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => Login()),
-                );
-              },
-              child: Text(
-                "Login",
-                style: TextStyle(color: Color.fromARGB(255, 0, 94, 255)),
-              ),
+            left: 90,
+            child: Row(
+              children: [
+                const Text(
+                  "Already have an account?",
+                  style: TextStyle(color: Colors.white),
+                ),
+                const SizedBox(width: 8),
+                InkWell(
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Login()),
+                    );
+                  },
+                  child: const Text(
+                    "Login",
+                    style: TextStyle(color: Color.fromARGB(255, 125, 173, 255)),
+                  ),
+                ),
+              ],
             ),
           ),
         ],

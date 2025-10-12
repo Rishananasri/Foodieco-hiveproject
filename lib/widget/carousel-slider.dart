@@ -33,9 +33,9 @@ class _CarouselDemoState extends State<CarouselDemo> {
         children: [
           Container(
             width: double.infinity,
-            color: Color.fromARGB(98, 213, 170, 255),
+            color: Color.fromARGB(255, 210, 215, 221),
 
-            padding: const EdgeInsets.symmetric(vertical: 16),
+            padding:  EdgeInsets.symmetric(vertical: 16),
             child: CarouselSlider(
               options: CarouselOptions(
                 height: 180,

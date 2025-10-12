@@ -1,37 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:pr/add.dart';
-import 'package:pr/chart.dart';
-import 'package:pr/home.dart';
-import 'package:pr/notes.dart';
-import 'package:pr/search.dart';
+import 'package:pr/widget/welcome.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pr/screens/add.dart';
+import 'package:pr/screens/chart.dart';
+import 'package:pr/screens/home.dart';
+import 'package:pr/screens/notes.dart';
+import 'package:pr/screens/search.dart';
 
 class Bottomnavbar extends StatefulWidget {
-  const Bottomnavbar({super.key});
+  final bool justLoggedIn; // Add this property
 
+  const Bottomnavbar({
+    super.key,
+    this.justLoggedIn = false,
+  }); 
   @override
   State<Bottomnavbar> createState() => _BottomnavbarState();
 }
 
 class _BottomnavbarState extends State<Bottomnavbar> {
   int _currentIndex = 0;
-  List<Widget> body = [Home(), Search(), Add(), Notes(), Chart()];
 
-  final List<Color> buttonColors = [
-    Color.fromARGB(251, 160, 72, 249),
-    Color.fromARGB(255, 246, 84, 173),
-    Color.fromARGB(255, 60, 216, 68),
-    Color.fromARGB(255, 214, 198, 21),
-    const Color.fromARGB(255, 48, 160, 240),
-  ];
+  List<Widget> body = [Home(), Search(), Add(), Chart(), Notes()];
 
-  final List<Color> navBarColors = [
-    Color.fromARGB(255, 233, 225, 251),
-    Color.fromARGB(255, 252, 218, 236),
-    Color.fromARGB(255, 218, 249, 218),
-    Color.fromARGB(255, 247, 242, 220),
-    Color.fromARGB(255, 219, 234, 248),
-  ];
+  final Color navBarColor = Color.fromARGB(255, 192, 208, 226);
+  final Color selectedButtonColor = Color.fromARGB(255, 40, 84, 135);
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.justLoggedIn) {
+      showWelcome();
+    }
+  }
+
+  void showWelcome() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String username = pref.getString("username") ?? "User";
+
+    await showWelcomeDialog(context, username);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +51,8 @@ class _BottomnavbarState extends State<Bottomnavbar> {
         index: _currentIndex,
         height: 60,
         backgroundColor: Colors.transparent,
-        color: navBarColors[_currentIndex],
-        buttonBackgroundColor: buttonColors[_currentIndex],
+        color: navBarColor,
+        buttonBackgroundColor: selectedButtonColor,
         animationDuration: const Duration(milliseconds: 300),
         items: [
           Icon(
@@ -62,12 +71,12 @@ class _BottomnavbarState extends State<Bottomnavbar> {
             color: _currentIndex == 2 ? Colors.white : Colors.black,
           ),
           Icon(
-            Icons.edit_note,
+            Icons.pie_chart_rounded,
             size: 30,
             color: _currentIndex == 3 ? Colors.white : Colors.black,
           ),
           Icon(
-            Icons.pie_chart_rounded,
+            Icons.edit_note,
             size: 30,
             color: _currentIndex == 4 ? Colors.white : Colors.black,
           ),

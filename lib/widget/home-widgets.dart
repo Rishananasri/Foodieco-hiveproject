@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pr/recipies.dart';
+import 'package:pr/screens/recipies.dart';
 
 Widget ctrow(BuildContext context, {String? txt, String? label}) {
   return InkWell(
@@ -15,28 +15,17 @@ Widget ctrow(BuildContext context, {String? txt, String? label}) {
         borderRadius: BorderRadius.circular(20),
         color: const Color.fromARGB(60, 255, 255, 255),
         border: Border.all(
-          color: const Color.fromARGB(190, 255, 255, 255),
-          width: 1,
+          color: const Color.fromARGB(253, 255, 255, 255),
+          width: 1.5,
         ),
       ),
       child: Column(
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Container(
+            child: SizedBox(
               height: 100,
               width: 170,
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    offset: Offset(5, 5),
-                    color: const Color.fromARGB(44, 0, 0, 0),
-                    blurRadius: 5,
-                  ),
-                ],
-                color: const Color.fromARGB(154, 255, 255, 255),
-                borderRadius: BorderRadius.circular(20),
-              ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Image.asset(
@@ -52,14 +41,7 @@ Widget ctrow(BuildContext context, {String? txt, String? label}) {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
-              color: const Color.fromARGB(255, 255, 255, 255),
-              shadows: [
-                BoxShadow(
-                  offset: Offset(2, 2),
-                  blurRadius: 15,
-                  color: const Color.fromARGB(255, 72, 20, 96),
-                ),
-              ],
+              color: const Color.fromARGB(255, 107, 106, 106),
             ),
           ),
         ],

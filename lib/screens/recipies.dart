@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pr/home.dart';
+import 'package:pr/screens/home.dart';
 
 class Recipie extends StatefulWidget {
   const Recipie({super.key});

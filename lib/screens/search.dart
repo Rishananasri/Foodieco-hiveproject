@@ -11,20 +11,28 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Color.fromARGB(216, 255, 193, 227),
       body: Stack(
         children: [
-          SizedBox(
-            height: 910,
-            width: 500,
-            child: Image.asset(
-              "assets/images/pinki.jpeg",
-              color: Colors.white.withOpacity(0.6),
-              colorBlendMode: BlendMode.softLight,
-              fit: BoxFit.cover,
+          Container(
+            height: 940,
+            width: 430,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color.fromARGB(255, 226, 234, 243),
+                  Color.fromARGB(255, 205, 218, 232),
+                  Color.fromARGB(255, 199, 210, 221),
+                  Color.fromARGB(255, 178, 194, 213),
+                  Color.fromARGB(255, 195, 204, 216),
+                  Color.fromARGB(255, 184, 197, 214),
+                  Color.fromARGB(255, 160, 177, 199),
+                  Color.fromARGB(255, 227, 234, 242),
+                ],
+                begin: AlignmentGeometry.topLeft,
+                end: AlignmentGeometry.bottomRight,
+              ),
             ),
           ),
-
           Column(
             children: [
               SizedBox(height: 70),

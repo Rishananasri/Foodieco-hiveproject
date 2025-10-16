@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Future<void> showWelcomeDialog(BuildContext context, String username) async {
+Future<void> showWelcomeDialog(BuildContext context, String username,{String?txt1,String?txt2}) async {
   showDialog(
     context: context,
     barrierDismissible: false,
@@ -25,7 +25,7 @@ Future<void> showWelcomeDialog(BuildContext context, String username) async {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Welcome!',
+              txt1 ?? 'Welcome!',
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
@@ -34,7 +34,7 @@ Future<void> showWelcomeDialog(BuildContext context, String username) async {
               ),
               SizedBox(height: 10),
               Text(
-                'Hello, $username',
+              txt2??  'Hello, $username',
                 style: TextStyle(fontSize: 20, color: Colors.grey[700]),
               ),
             ],

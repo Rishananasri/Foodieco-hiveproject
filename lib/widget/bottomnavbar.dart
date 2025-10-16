@@ -1,35 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:pr/notes/shownotes.dart';
+import 'package:pr/recipe/addrecipe.dart';
 import 'package:pr/widget/welcome.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:pr/screens/add.dart';
 import 'package:pr/screens/chart.dart';
 import 'package:pr/screens/home.dart';
-import 'package:pr/screens/notes.dart';
 import 'package:pr/screens/search.dart';
 
 class Bottomnavbar extends StatefulWidget {
-  final bool justLoggedIn; // Add this property
-
+  final bool justLoggedIn;
+  final int initialIndex;
   const Bottomnavbar({
     super.key,
     this.justLoggedIn = false,
-  }); 
+    this.initialIndex = 0,
+  });
+
   @override
   State<Bottomnavbar> createState() => _BottomnavbarState();
 }
 
 class _BottomnavbarState extends State<Bottomnavbar> {
-  int _currentIndex = 0;
+  late int _currentIndex;
 
-  List<Widget> body = [Home(), Search(), Add(), Chart(), Notes()];
+  List<Widget> body = [Home(), Search(), Add(), Chart(), Note()];
 
-  final Color navBarColor = Color.fromARGB(255, 192, 208, 226);
-  final Color selectedButtonColor = Color.fromARGB(255, 40, 84, 135);
+  final Color navBarColor = const Color.fromARGB(255, 192, 208, 226);
+  final Color selectedButtonColor = const Color.fromARGB(255, 40, 84, 135);
 
   @override
   void initState() {
     super.initState();
+    _currentIndex = widget.initialIndex;
+
     if (widget.justLoggedIn) {
       showWelcome();
     }
@@ -37,7 +41,7 @@ class _BottomnavbarState extends State<Bottomnavbar> {
 
   void showWelcome() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    String username = pref.getString("username") ?? "User";
+    String username = pref.getString("currentUsername") ?? "User";
 
     await showWelcomeDialog(context, username);
   }
@@ -53,7 +57,7 @@ class _BottomnavbarState extends State<Bottomnavbar> {
         backgroundColor: Colors.transparent,
         color: navBarColor,
         buttonBackgroundColor: selectedButtonColor,
-        animationDuration: const Duration(milliseconds: 300),
+        animationDuration: Duration(milliseconds: 300),
         items: [
           Icon(
             Icons.home,

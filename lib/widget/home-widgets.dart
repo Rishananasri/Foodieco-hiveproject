@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:pr/screens/recipies.dart';
+import 'package:pr/recipe/recipecategory.dart';
 
-Widget ctrow(BuildContext context, {String? txt, String? label}) {
+/// Category card widget
+Widget ctrow(
+  BuildContext context, {
+  String? txt,
+  String? label,
+  required String currentUser,
+}) {
   return InkWell(
     onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Recipie()),
-      );
+      if (label != null) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                Recipie(selectedCategory: label, currentUser: currentUser),
+          ),
+        );
+      }
     },
     child: Container(
       height: 160,
@@ -35,13 +46,13 @@ Widget ctrow(BuildContext context, {String? txt, String? label}) {
               ),
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             label ?? "Starters",
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
-              color: const Color.fromARGB(255, 107, 106, 106),
+              color: Color.fromARGB(255, 107, 106, 106),
             ),
           ),
         ],
@@ -50,44 +61,113 @@ Widget ctrow(BuildContext context, {String? txt, String? label}) {
   );
 }
 
-Widget category(BuildContext context) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-    children: [
-      Column(
-        children: [
-          ctrow(context, label: "Starters"),
-          SizedBox(height: 20),
-          ctrow(context, label: "Snacks", txt: "assets/images/snack.jpg"),
-          SizedBox(height: 20),
-          ctrow(context, label: "Desserts", txt: "assets/images/dessert.jpg"),
-          SizedBox(height: 20),
-          ctrow(context, label: "Drinks", txt: "assets/images/drink.jpg"),
-          SizedBox(height: 20),
-          ctrow(context, label: "Seafood", txt: "assets/images/seafood.jpg"),
-          SizedBox(height: 20),
-          ctrow(context, label: "Breads", txt: "assets/images/bread.jpg"),
-          SizedBox(height: 20),
-          ctrow(context, label: "Pasta", txt: "assets/images/pasta.jpg"),
-        ],
-      ),
-      Column(
-        children: [
-          ctrow(context, label: "Rice", txt: "assets/images/rice.jpg"),
-          SizedBox(height: 20),
-          ctrow(context, label: "Curry", txt: "assets/images/curry.jpg"),
-          SizedBox(height: 20),
-          ctrow(context, label: "Salads", txt: "assets/images/salad.jpg"),
-          SizedBox(height: 20),
-          ctrow(context, label: "Soups", txt: "assets/images/soup.jpg"),
-          SizedBox(height: 20),
-          ctrow(context, label: "Fast Food", txt: "assets/images/fastfood.jpg"),
-          SizedBox(height: 20),
-          ctrow(context, label: "Grill", txt: "assets/images/grill.jpg"),
-          SizedBox(height: 20),
-          ctrow(context, label: "Sides", txt: "assets/images/sides.png"),
-        ],
-      ),
-    ],
+/// Category list scrollable widget
+Widget category(BuildContext context, String currentUser) {
+  return SingleChildScrollView(
+    scrollDirection: Axis.horizontal,
+    child: Row(
+      children: [
+        Column(
+          children: [
+            ctrow(context, label: "Starters", currentUser: currentUser),
+            const SizedBox(height: 20),
+            ctrow(
+              context,
+              label: "Snacks",
+              txt: "assets/images/snack.jpg",
+              currentUser: currentUser,
+            ),
+            const SizedBox(height: 20),
+            ctrow(
+              context,
+              label: "Desserts",
+              txt: "assets/images/dessert.jpg",
+              currentUser: currentUser,
+            ),
+            const SizedBox(height: 20),
+            ctrow(
+              context,
+              label: "Drinks",
+              txt: "assets/images/drink.jpg",
+              currentUser: currentUser,
+            ),
+            const SizedBox(height: 20),
+            ctrow(
+              context,
+              label: "Seafood",
+              txt: "assets/images/seafood.jpg",
+              currentUser: currentUser,
+            ),
+            const SizedBox(height: 20),
+            ctrow(
+              context,
+              label: "Breads",
+              txt: "assets/images/bread.jpg",
+              currentUser: currentUser,
+            ),
+            const SizedBox(height: 20),
+            ctrow(
+              context,
+              label: "Pasta",
+              txt: "assets/images/pasta.jpg",
+              currentUser: currentUser,
+            ),
+          ],
+        ),
+        const SizedBox(width: 20),
+        Column(
+          children: [
+            ctrow(
+              context,
+              label: "Rice",
+              txt: "assets/images/rice.jpg",
+              currentUser: currentUser,
+            ),
+            const SizedBox(height: 20),
+            ctrow(
+              context,
+              label: "Curry",
+              txt: "assets/images/curry.jpg",
+              currentUser: currentUser,
+            ),
+            const SizedBox(height: 20),
+            ctrow(
+              context,
+              label: "Salads",
+              txt: "assets/images/salad.jpg",
+              currentUser: currentUser,
+            ),
+            const SizedBox(height: 20),
+            ctrow(
+              context,
+              label: "Soups",
+              txt: "assets/images/soup.jpg",
+              currentUser: currentUser,
+            ),
+            const SizedBox(height: 20),
+            ctrow(
+              context,
+              label: "Fast Food",
+              txt: "assets/images/fastfood.jpg",
+              currentUser: currentUser,
+            ),
+            const SizedBox(height: 20),
+            ctrow(
+              context,
+              label: "Grill",
+              txt: "assets/images/grill.jpg",
+              currentUser: currentUser,
+            ),
+            const SizedBox(height: 20),
+            ctrow(
+              context,
+              label: "Sides",
+              txt: "assets/images/sides.png",
+              currentUser: currentUser,
+            ),
+          ],
+        ),
+      ],
+    ),
   );
 }

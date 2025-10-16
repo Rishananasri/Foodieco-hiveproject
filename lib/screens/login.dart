@@ -136,7 +136,7 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   TextButton(
                     onPressed: () async {
                       String username = namecontroller.text.trim();
@@ -144,59 +144,55 @@ class _LoginState extends State<Login> {
 
                       SharedPreferences pref =
                           await SharedPreferences.getInstance();
-                      String savedUsername = pref.getString("username") ?? "";
-                      String savedPassword = pref.getString("password") ?? "";
+                      String savedPassword =
+                          pref.getString("user_${username}_password") ?? "";
 
-                      if (username.isNotEmpty && password.isNotEmpty) {
-                        if (username == savedUsername &&
-                            password == savedPassword) {
-                          await pref.setBool("isLoggedIn", true);
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  Bottomnavbar(justLoggedIn: true),
+                      if (username.isEmpty || password.isEmpty) {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text("Incomplete Details"),
+                            content: const Text(
+                              "Please enter both your username and password.",
                             ),
-                          );
-                        } else {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                content: const Text(
-                                  "Invalid credentials. Please login with correct account.",
-                                ),
-                                actions: [
-                                  TextButton(
-                                    child: const Text("OK"),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        }
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text("OK"),
+                              ),
+                            ],
+                          ),
+                        );
+                        return;
+                      }
+
+                      if (password == savedPassword &&
+                          savedPassword.isNotEmpty) {
+                        await pref.setBool("isLoggedIn", true);
+                        await pref.setString("currentUsername", username);
+                        await pref.setString("loggedInUser", username);
+
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                Bottomnavbar(justLoggedIn: true),
+                          ),
+                        );
                       } else {
                         showDialog(
                           context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text("Incomplete Details"),
-                              content: const Text(
-                                "Please enter both your username and password.",
+                          builder: (context) => AlertDialog(
+                            content: const Text(
+                              "Invalid credentials. Please login with correct account.",
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text("OK"),
                               ),
-                              actions: [
-                                TextButton(
-                                  child: const Text("OK"),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          },
+                            ],
+                          ),
                         );
                       }
                     },

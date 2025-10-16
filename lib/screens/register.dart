@@ -64,7 +64,7 @@ class _RegisterState extends State<Register> {
                           color: Color.fromARGB(255, 60, 60, 60),
                           fontSize: 18,
                         ),
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Username',
                           prefixIcon: Icon(
@@ -199,9 +199,7 @@ class _RegisterState extends State<Register> {
                               actions: [
                                 TextButton(
                                   child: const Text("OK"),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
+                                  onPressed: () => Navigator.of(context).pop(),
                                 ),
                               ],
                             );
@@ -221,9 +219,7 @@ class _RegisterState extends State<Register> {
                               actions: [
                                 TextButton(
                                   child: const Text("OK"),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
+                                  onPressed: () => Navigator.of(context).pop(),
                                 ),
                               ],
                             );
@@ -234,10 +230,14 @@ class _RegisterState extends State<Register> {
 
                       SharedPreferences pref =
                           await SharedPreferences.getInstance();
-                      await pref.setBool("isRegistered", true);
-                      await pref.setString("username", username);
-                      await pref.setString("password", password);
+                      await pref.setString(
+                        "user_${username}_password",
+                        password,
+                      );
+                      await pref.setString("currentUsername", username);
+
                       await pref.setBool("isLoggedIn", true);
+
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(

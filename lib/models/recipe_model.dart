@@ -16,13 +16,13 @@ class RecipeModel {
   String imagePath;
 
   @HiveField(4)
-  String username; // 👈 add this field
+  String username; 
 
   RecipeModel({
     required this.name,
     required this.category,
     required this.description,
     required this.imagePath,
-    required this.username, // 👈 include in constructor
+    required this.username, 
   });
 }

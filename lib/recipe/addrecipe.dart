@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:developer'; 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:hive/hive.dart';
@@ -21,8 +22,20 @@ class _AddState extends State<Add> {
   final _recipeController = TextEditingController();
 
   final List<String> items = [
-    "Starters", "Snacks", "Curry", "Rice", "Breads", "Salads", "Soups",
-    "Desserts", "Drinks", "Grill", "Pasta", "Fast Food", "Seafood", "Sides",
+    "Starters",
+    "Snacks",
+    "Curry",
+    "Rice",
+    "Breads",
+    "Salads",
+    "Soups",
+    "Desserts",
+    "Drinks",
+    "Grill",
+    "Pasta",
+    "Fast Food",
+    "Seafood",
+    "Sides",
   ];
 
   Future<void> _pickImage() async {
@@ -32,12 +45,16 @@ class _AddState extends State<Add> {
         imageQuality: 80,
       );
       if (pickedFile != null) {
-        setState(() { _image = File(pickedFile.path); });
+        setState(() {
+          _image = File(pickedFile.path);
+        });
+        log("Image picked: ${pickedFile.path}", name: "AddRecipe");
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error picking image: $e"))
-      );
+      log("Error picking image: $e", name: "AddRecipe", level: 1000);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Error picking image: $e")));
     }
   }
 
@@ -45,6 +62,7 @@ class _AddState extends State<Add> {
     final appDir = await getApplicationDocumentsDirectory();
     final fileName = '${DateTime.now().millisecondsSinceEpoch}.jpg';
     final savedImage = await imageFile.copy('${appDir.path}/$fileName');
+    log("Image saved to app dir: ${savedImage.path}", name: "AddRecipe");
     return savedImage.path;
   }
 
@@ -55,24 +73,28 @@ class _AddState extends State<Add> {
       selectedValue = null;
       _image = null;
     });
+    log("Form reset", name: "AddRecipe");
   }
 
   Future<void> _saveRecipe() async {
-    if (_image == null || selectedValue == null ||
-        _nameController.text.trim().isEmpty || _recipeController.text.trim().isEmpty) {
+    if (_image == null ||
+        selectedValue == null ||
+        _nameController.text.trim().isEmpty ||
+        _recipeController.text.trim().isEmpty) {
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: const Text("Incomplete"),
-          content: const Text("Please fill all fields and pick an image."),
+          title: Text("Incomplete"),
+          content: Text("Please fill all fields and pick an image."),
           actions: [
             TextButton(
-              child: const Text("OK"),
+              child:  Text("OK"),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ],
         ),
       );
+      log("Save attempted with incomplete form", name: "AddRecipe", level: 900);
       return;
     }
 
@@ -80,7 +102,7 @@ class _AddState extends State<Add> {
       final savedImagePath = await _saveImageToAppDir(_image!);
 
       final prefs = await SharedPreferences.getInstance();
-      final currentUser = prefs.getString('currentUsername') ?? 'guest';
+      final currentUser = prefs.getString('currentUsername') ?? '';
 
       final recipe = RecipeModel(
         imagePath: savedImagePath,
@@ -93,14 +115,16 @@ class _AddState extends State<Add> {
       final box = Hive.box<RecipeModel>('recipe_db');
       await box.add(recipe);
 
+      log("Recipe saved successfully: ${recipe.name}", name: "AddRecipe");
+
       showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: const Text("Saved"),
-          content: const Text("The recipe has been saved successfully."),
+          title:  Text("Saved"),
+          content:  Text("The recipe has been saved successfully."),
           actions: [
             TextButton(
-              child: const Text("OK"),
+              child:  Text("OK"),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ],
@@ -109,9 +133,10 @@ class _AddState extends State<Add> {
 
       _resetForm();
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error saving recipe: $e"))
-      );
+      log("Error saving recipe: $e", name: "AddRecipe", level: 1000);
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Error saving recipe: $e")));
     }
   }
 
@@ -124,28 +149,30 @@ class _AddState extends State<Add> {
 
   @override
   Widget build(BuildContext context) {
+    log("AddRecipe screen built", name: "AddRecipe");
+
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 217, 226, 236),
       body: Padding(
-        padding: const EdgeInsets.only(left: 20),
+        padding: EdgeInsets.only(left: 20),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 50),
+               SizedBox(height: 50),
               Padding(
-                padding: const EdgeInsets.only(left: 300),
+                padding:  EdgeInsets.only(left: 300),
                 child: ElevatedButton(
                   onPressed: _saveRecipe,
                   style: ElevatedButton.styleFrom(
                     foregroundColor: const Color.fromARGB(255, 72, 71, 71),
                     backgroundColor: const Color.fromARGB(255, 245, 246, 247),
                   ),
-                  child: const Text("Save"),
+                  child: Text("Save"),
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(bottom: 20),
+                padding: EdgeInsets.only(bottom: 20),
                 child: GestureDetector(
                   onTap: _pickImage,
                   child: Container(
@@ -154,47 +181,63 @@ class _AddState extends State<Add> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color: Colors.white,
-                      image: _image != null ? DecorationImage(
-                        image: FileImage(_image!),
-                        fit: BoxFit.cover,
-                      ) : null,
+                      image: _image != null
+                          ? DecorationImage(
+                              image: FileImage(_image!),
+                              fit: BoxFit.cover,
+                            )
+                          : null,
                     ),
-                    child: _image == null ? const Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.add_a_photo, size: 40, color: Color.fromARGB(255, 90, 90, 90)),
-                          SizedBox(height: 8),
-                          Text("Add Image", style: TextStyle(color: Color.fromARGB(255, 90, 90, 90), fontSize: 16)),
-                        ],
-                      ),
-                    ) : null,
+                    child: _image == null
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children:  [
+                                Icon(
+                                  Icons.add_a_photo,
+                                  size: 40,
+                                  color: Color.fromARGB(255, 90, 90, 90),
+                                ),
+                                SizedBox(height: 8),
+                                Text(
+                                  "Add Image",
+                                  style: TextStyle(
+                                    color: Color.fromARGB(255, 90, 90, 90),
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        : null,
                   ),
                 ),
               ),
               Container(
                 height: 60,
                 width: 350,
-                padding: const EdgeInsets.symmetric(horizontal: 12),
+                padding:  EdgeInsets.symmetric(horizontal: 12),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white,
                 ),
                 child: DropdownButton<String>(
                   value: selectedValue,
-                  hint: const Text("Select Category"),
+                  hint:  Text("Select Category"),
                   isExpanded: true,
-                  underline: const SizedBox(),
+                  underline:  SizedBox(),
                   items: items.map((String item) {
                     return DropdownMenuItem<String>(
                       value: item,
                       child: Text(item),
                     );
                   }).toList(),
-                  onChanged: (value) => setState(() { selectedValue = value; }),
+                  onChanged: (value) => setState(() {
+                    selectedValue = value;
+                  }),
                 ),
               ),
-              const SizedBox(height: 30),
+               SizedBox(height: 30),
               Container(
                 height: 60,
                 width: 350,
@@ -203,17 +246,17 @@ class _AddState extends State<Add> {
                   color: Colors.white,
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  padding:  EdgeInsets.symmetric(horizontal: 20),
                   child: TextField(
                     controller: _nameController,
-                    decoration: const InputDecoration(
+                    decoration:  InputDecoration(
                       border: InputBorder.none,
                       hintText: "Type recipe name",
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 30),
+               SizedBox(height: 30),
               Container(
                 height: 390,
                 width: 350,
@@ -222,13 +265,13 @@ class _AddState extends State<Add> {
                   color: Colors.white,
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(12.0),
+                  padding: EdgeInsets.all(12.0),
                   child: TextField(
                     controller: _recipeController,
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
-                    style: const TextStyle(fontSize: 16, height: 2),
-                    decoration: const InputDecoration(
+                    style:TextStyle(fontSize: 16, height: 2),
+                    decoration: InputDecoration(
                       border: InputBorder.none,
                       hintText: "Start writing your recipe here...",
                     ),

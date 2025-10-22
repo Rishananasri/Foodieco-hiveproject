@@ -1,5 +1,6 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:pr/models/functions.dart';
+import 'package:pr/service/functions.dart';
 import 'package:pr/notes/addnote.dart';
 import 'package:pr/notes/notes.dart';
 
@@ -14,6 +15,7 @@ class _NoteState extends State<Note> {
   @override
   void initState() {
     super.initState();
+    log("Note screen initialized", name: "NoteScreen");
     getAllnotes();
   }
 
@@ -24,31 +26,35 @@ class _NoteState extends State<Note> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 217, 226, 236),
         automaticallyImplyLeading: false,
-        title: const Padding(
+        title: Padding(
           padding: EdgeInsets.only(left: 15),
           child: Text("Notes", style: TextStyle(fontWeight: FontWeight.w500)),
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: const [
+          children:  [
             SizedBox(height: 10),
             SizedBox(height: 740, child: Notes()),
           ],
         ),
       ),
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(bottom: 70),
+        padding: EdgeInsets.only(bottom: 70),
         child: FloatingActionButton(
           onPressed: () {
+            log(
+              "FloatingActionButton pressed: navigating to AddNoteScreen",
+              name: "NoteScreen",
+            );
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const AddNoteScreen()),
+              MaterialPageRoute(builder: (context) =>  AddNoteScreen()),
             );
           },
           backgroundColor: const Color.fromARGB(255, 60, 124, 198),
-          shape: const CircleBorder(),
-          child: const Icon(Icons.add, color: Colors.white, size: 30),
+          shape:  CircleBorder(),
+          child:  Icon(Icons.add, color: Colors.white, size: 30),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,

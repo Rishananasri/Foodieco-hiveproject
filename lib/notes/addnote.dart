@@ -1,6 +1,7 @@
+import 'dart:developer'; 
 import 'package:flutter/material.dart';
 import 'package:pr/models/note_model.dart';
-import 'package:pr/models/functions.dart';
+import 'package:pr/service/functions.dart';
 import 'package:pr/widget/bottomnavbar.dart';
 
 class AddNoteScreen extends StatefulWidget {
@@ -15,7 +16,14 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
   final _contentController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    log("AddNoteScreen Initialized", name: "AddNote");
+  }
+
+  @override
   void dispose() {
+    log("AddNoteScreen Disposed", name: "AddNote");
     _titleController.dispose();
     _contentController.dispose();
     super.dispose();
@@ -24,27 +32,31 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
   void _onSaveNote(BuildContext context) {
     final title = _titleController.text.trim();
     final content = _contentController.text.trim();
+    log(
+      "Attempting to save note: Title='$title', Content length=${content.length}",
+      name: "AddNote",
+    );
 
     if (title.isEmpty || content.isEmpty) {
+      log("Validation failed: Missing title or content", name: "AddNote");
       showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          title: const Text("Incomplete"),
-          content: const Text("Please fill all fields."),
+          title:  Text("Incomplete"),
+          content:  Text("Please fill all fields."),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text("OK"),
+              child:  Text("OK"),
             ),
           ],
         ),
       );
       return;
     }
-
-    // ✅ Create note (userId will be added inside addNote)
     final note = NoteModel(title: title, content: content, userId: "");
     addNote(note);
+    log("Note saved successfully: $note", name: "AddNote");
 
     _titleController.clear();
     _contentController.clear();
@@ -52,8 +64,8 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text("Saved"),
-        content: const Text("The note has been saved successfully."),
+        title:  Text("Saved"),
+        content:  Text("The note has been saved successfully."),
         actions: [
           TextButton(
             onPressed: () {
@@ -65,7 +77,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
                 ),
               );
             },
-            child: const Text("OK"),
+            child:  Text("OK"),
           ),
         ],
       ),
@@ -81,7 +93,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
         actions: [
           IconButton(
             onPressed: () => _onSaveNote(context),
-            icon: Padding(
+            icon:  Padding(
               padding: EdgeInsets.only(right: 15),
               child: Icon(Icons.check, size: 30),
             ),
@@ -90,31 +102,31 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
       ),
       body: Column(
         children: [
-          const SizedBox(height: 20),
+           SizedBox(height: 20),
           Padding(
-            padding: const EdgeInsets.all(20),
+            padding:  EdgeInsets.all(20),
             child: Container(
               height: 60,
               width: 370,
-              padding: const EdgeInsets.all(15),
+              padding:  EdgeInsets.all(15),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: TextField(
                 controller: _titleController,
-                decoration: const InputDecoration(
+                decoration:  InputDecoration(
                   border: InputBorder.none,
                   hintText: "Title",
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 30),
+           SizedBox(height: 30),
           Container(
             height: 500,
             width: 370,
-            padding: const EdgeInsets.all(15),
+            padding:  EdgeInsets.all(15),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(12),
@@ -123,7 +135,7 @@ class _AddNoteScreenState extends State<AddNoteScreen> {
               controller: _contentController,
               keyboardType: TextInputType.multiline,
               maxLines: null,
-              decoration: const InputDecoration(
+              decoration:  InputDecoration(
                 border: InputBorder.none,
                 hintText: "Start writing your notes....",
               ),

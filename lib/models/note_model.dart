@@ -13,7 +13,7 @@ class NoteModel {
   final String content;
 
   @HiveField(3)
-  final String userId; // user-based
+  final String userId; 
 
   NoteModel({
     required this.title,

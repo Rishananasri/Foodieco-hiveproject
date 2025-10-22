@@ -19,7 +19,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void navigation() async {
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed( Duration(seconds: 3));
 
     SharedPreferences pref = await SharedPreferences.getInstance();
     bool isRegistered = pref.getBool("isRegistered") ?? false;
@@ -28,17 +28,17 @@ class _SplashScreenState extends State<SplashScreen> {
     if (isLoggedIn) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const Bottomnavbar()),
+        MaterialPageRoute(builder: (context) =>  Bottomnavbar()),
       );
     } else if (isRegistered) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const Login()),
+        MaterialPageRoute(builder: (context) =>  Login()),
       );
     } else {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const Register()),
+        MaterialPageRoute(builder: (context) =>  Register()),
       );
     }
   }

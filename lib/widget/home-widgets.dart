@@ -1,7 +1,9 @@
+import 'dart:developer'; 
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:pr/models/recipe_model.dart';
 import 'package:pr/recipe/recipecategory.dart';
 
-/// Category card widget
 Widget ctrow(
   BuildContext context, {
   String? txt,
@@ -11,6 +13,10 @@ Widget ctrow(
   return InkWell(
     onTap: () {
       if (label != null) {
+        log(
+          "Category tapped: $label by user: $currentUser",
+          name: "HomeWidgets",
+        );
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -33,7 +39,7 @@ Widget ctrow(
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding:  EdgeInsets.all(8.0),
             child: SizedBox(
               height: 100,
               width: 170,
@@ -46,10 +52,10 @@ Widget ctrow(
               ),
             ),
           ),
-          const SizedBox(height: 8),
+           SizedBox(height: 8),
           Text(
             label ?? "Starters",
-            style: const TextStyle(
+            style:  TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
               color: Color.fromARGB(255, 107, 106, 106),
@@ -61,113 +67,93 @@ Widget ctrow(
   );
 }
 
-/// Category list scrollable widget
 Widget category(BuildContext context, String currentUser) {
-  return SingleChildScrollView(
-    scrollDirection: Axis.horizontal,
-    child: Row(
-      children: [
-        Column(
+  final recipeBox = Hive.box<RecipeModel>('recipe_db');
+
+  final categories = [
+    {"label": "Starters", "image": "assets/images/staters.png"},
+    {"label": "Snacks", "image": "assets/images/snack.jpg"},
+    {"label": "Desserts", "image": "assets/images/dessert.jpg"},
+    {"label": "Drinks", "image": "assets/images/drink.jpg"},
+    {"label": "Seafood", "image": "assets/images/seafood.jpg"},
+    {"label": "Breads", "image": "assets/images/bread.jpg"},
+    {"label": "Pasta", "image": "assets/images/pasta.jpg"},
+    {"label": "Rice", "image": "assets/images/rice.jpg"},
+    {"label": "Curry", "image": "assets/images/curry.jpg"},
+    {"label": "Salads", "image": "assets/images/salad.jpg"},
+    {"label": "Soups", "image": "assets/images/soup.jpg"},
+    {"label": "Fast Food", "image": "assets/images/fastfood.jpg"},
+    {"label": "Grill", "image": "assets/images/grill.jpg"},
+    {"label": "Sides", "image": "assets/images/sides.png"},
+  ];
+
+  return ValueListenableBuilder(
+    valueListenable: recipeBox.listenable(),
+    builder: (context, Box<RecipeModel> box, _) {
+      final filteredCategories = categories.where((cat) {
+        final catRecipes = box.values.where(
+          (recipe) =>
+              recipe.username == currentUser && recipe.category == cat["label"],
+        );
+        return catRecipes.isNotEmpty;
+      }).toList();
+
+      if (filteredCategories.isEmpty) {
+        return  Padding(
+          padding: EdgeInsets.symmetric(vertical: 20),
+          child: Center(
+            child: Image(
+              image: AssetImage("assets/images/Your paragraph text (3).png"),
+            ),
+          ),
+        );
+      }
+
+      log(
+        "Displaying ${filteredCategories.length} categories for user: $currentUser",
+        name: "HomeWidgets",
+      );
+
+      return SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
           children: [
-            ctrow(context, label: "Starters", currentUser: currentUser),
-            const SizedBox(height: 20),
-            ctrow(
-              context,
-              label: "Snacks",
-              txt: "assets/images/snack.jpg",
-              currentUser: currentUser,
+            Column(
+              children: filteredCategories
+                  .sublist(0, (filteredCategories.length / 2).ceil())
+                  .map(
+                    (cat) => Padding(
+                      padding: EdgeInsets.only(bottom: 20),
+                      child: ctrow(
+                        context,
+                        label: cat["label"],
+                        txt: cat["image"],
+                        currentUser: currentUser,
+                      ),
+                    ),
+                  )
+                  .toList(),
             ),
-            const SizedBox(height: 20),
-            ctrow(
-              context,
-              label: "Desserts",
-              txt: "assets/images/dessert.jpg",
-              currentUser: currentUser,
-            ),
-            const SizedBox(height: 20),
-            ctrow(
-              context,
-              label: "Drinks",
-              txt: "assets/images/drink.jpg",
-              currentUser: currentUser,
-            ),
-            const SizedBox(height: 20),
-            ctrow(
-              context,
-              label: "Seafood",
-              txt: "assets/images/seafood.jpg",
-              currentUser: currentUser,
-            ),
-            const SizedBox(height: 20),
-            ctrow(
-              context,
-              label: "Breads",
-              txt: "assets/images/bread.jpg",
-              currentUser: currentUser,
-            ),
-            const SizedBox(height: 20),
-            ctrow(
-              context,
-              label: "Pasta",
-              txt: "assets/images/pasta.jpg",
-              currentUser: currentUser,
+             SizedBox(width: 20),
+            Column(
+              children: filteredCategories
+                  .sublist((filteredCategories.length / 2).ceil())
+                  .map(
+                    (cat) => Padding(
+                      padding:  EdgeInsets.only(bottom: 20),
+                      child: ctrow(
+                        context,
+                        label: cat["label"],
+                        txt: cat["image"],
+                        currentUser: currentUser,
+                      ),
+                    ),
+                  )
+                  .toList(),
             ),
           ],
         ),
-        const SizedBox(width: 20),
-        Column(
-          children: [
-            ctrow(
-              context,
-              label: "Rice",
-              txt: "assets/images/rice.jpg",
-              currentUser: currentUser,
-            ),
-            const SizedBox(height: 20),
-            ctrow(
-              context,
-              label: "Curry",
-              txt: "assets/images/curry.jpg",
-              currentUser: currentUser,
-            ),
-            const SizedBox(height: 20),
-            ctrow(
-              context,
-              label: "Salads",
-              txt: "assets/images/salad.jpg",
-              currentUser: currentUser,
-            ),
-            const SizedBox(height: 20),
-            ctrow(
-              context,
-              label: "Soups",
-              txt: "assets/images/soup.jpg",
-              currentUser: currentUser,
-            ),
-            const SizedBox(height: 20),
-            ctrow(
-              context,
-              label: "Fast Food",
-              txt: "assets/images/fastfood.jpg",
-              currentUser: currentUser,
-            ),
-            const SizedBox(height: 20),
-            ctrow(
-              context,
-              label: "Grill",
-              txt: "assets/images/grill.jpg",
-              currentUser: currentUser,
-            ),
-            const SizedBox(height: 20),
-            ctrow(
-              context,
-              label: "Sides",
-              txt: "assets/images/sides.png",
-              currentUser: currentUser,
-            ),
-          ],
-        ),
-      ],
-    ),
+      );
+    },
   );
 }

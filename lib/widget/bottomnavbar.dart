@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:pr/notes/shownotes.dart';
@@ -33,17 +34,30 @@ class _BottomnavbarState extends State<Bottomnavbar> {
   void initState() {
     super.initState();
     _currentIndex = widget.initialIndex;
+    log(
+      "Bottomnavbar initialized with index: $_currentIndex",
+      name: "Bottomnavbar",
+    );
 
     if (widget.justLoggedIn) {
+      log("User just logged in, showing welcome dialog", name: "Bottomnavbar");
       showWelcome();
     }
   }
 
   void showWelcome() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    String username = pref.getString("currentUsername") ?? "User";
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String username = pref.getString("currentUsername") ?? "User";
 
-    await showWelcomeDialog(context, username);
+      await showWelcomeDialog(context, username);
+    } catch (e) {
+      log(
+        "Error showing welcome dialog: $e",
+        name: "Bottomnavbar",
+        level: 1000,
+      );
+    }
   }
 
   @override
@@ -57,7 +71,7 @@ class _BottomnavbarState extends State<Bottomnavbar> {
         backgroundColor: Colors.transparent,
         color: navBarColor,
         buttonBackgroundColor: selectedButtonColor,
-        animationDuration: Duration(milliseconds: 300),
+        animationDuration:  Duration(milliseconds: 300),
         items: [
           Icon(
             Icons.home,
@@ -86,6 +100,7 @@ class _BottomnavbarState extends State<Bottomnavbar> {
           ),
         ],
         onTap: (index) {
+          log("Bottom navbar tapped, new index: $index", name: "Bottomnavbar");
           setState(() {
             _currentIndex = index;
           });

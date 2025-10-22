@@ -12,7 +12,6 @@ Future<String?> getCurrentUserId() async {
   return prefs.getString('currentUsername');
 }
 
-// ------------------ Notes Functions ------------------
 
 Future<void> addNote(NoteModel value) async {
   final userId = await getCurrentUserId();
@@ -59,7 +58,6 @@ Future<void> editNote(int key, NoteModel updatedNote) async {
   await noteDB.put(key, updatedWithUser);
   getAllnotes();
 }
-// ---------------- Recipe functions ----------------
 
 Future<void> addRecipe(RecipeModel recipe) async {
   final recipeBox = Hive.box<RecipeModel>('recipe_db');
@@ -79,3 +77,7 @@ Future<void> deleteRecipe(dynamic key) async {
   getAllRecipes();
 }
 
+Future<void> editRecipe(dynamic key, RecipeModel updatedRecipe) async {
+  final recipeBox = Hive.box<RecipeModel>('recipe_db');
+  await recipeBox.put(key, updatedRecipe);
+}

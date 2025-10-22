@@ -1,3 +1,4 @@
+import 'dart:developer'; 
 import 'package:flutter/material.dart';
 import 'package:pr/screens/register.dart';
 import 'package:pr/widget/bottomnavbar.dart';
@@ -14,6 +15,97 @@ class _LoginState extends State<Login> {
   bool _isPasswordHidden = true;
   TextEditingController namecontroller = TextEditingController();
   TextEditingController passcontroller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    log("Login Page Initialized", name: "LoginPage");
+  }
+
+  @override
+  void dispose() {
+    namecontroller.dispose();
+    passcontroller.dispose();
+    log("Login Page Disposed", name: "LoginPage");
+    super.dispose();
+  }
+
+  void togglePasswordVisibility() {
+    setState(() {
+      _isPasswordHidden = !_isPasswordHidden;
+    });
+    log("Password visibility toggled: $_isPasswordHidden", name: "LoginPage");
+  }
+
+  Future<void> handleLogin() async {
+    String username = namecontroller.text.trim();
+    String password = passcontroller.text.trim();
+    log("Login attempt with username: $username", name: "LoginPage");
+
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String savedPassword = pref.getString("user_${username}_password") ?? "";
+    log("Retrieved saved password for user: $username", name: "LoginPage");
+
+    if (username.isEmpty || password.isEmpty) {
+      log("Login failed: Username or password is empty", name: "LoginPage");
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title:  Text("Incomplete Details"),
+          content:  Text("Please enter both your username and password."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child:  Text("OK"),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
+
+    if (password == savedPassword && savedPassword.isNotEmpty) {
+      log("Login successful for user: $username", name: "LoginPage");
+
+      await pref.setBool("isLoggedIn", true);
+      await pref.setString("currentUsername", username);
+      await pref.setString("loggedInUser", username);
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Bottomnavbar(justLoggedIn: true),
+        ),
+      );
+    } else {
+      log(
+        "Login failed: Invalid credentials for user: $username",
+        name: "LoginPage",
+      );
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          content:  Text(
+            "Invalid credentials. Please login with correct account.",
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child:  Text("OK"),
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  void navigateToRegister() {
+    log("Navigating to Register Page", name: "LoginPage");
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) =>  Register()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +134,7 @@ class _LoginState extends State<Login> {
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    offset: const Offset(5, 5),
+                    offset: Offset(5, 5),
                     blurRadius: 10,
                     color: const Color.fromARGB(32, 0, 0, 0),
                   ),
@@ -50,9 +142,9 @@ class _LoginState extends State<Login> {
               ),
               child: Column(
                 children: [
-                  const SizedBox(height: 60),
+                   SizedBox(height: 60),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
+                    padding:  EdgeInsets.symmetric(
                       vertical: 10,
                       horizontal: 20,
                     ),
@@ -65,11 +157,11 @@ class _LoginState extends State<Login> {
                       ),
                       child: TextField(
                         controller: namecontroller,
-                        style: const TextStyle(
+                        style:  TextStyle(
                           color: Color.fromARGB(255, 60, 60, 60),
                           fontSize: 18,
                         ),
-                        decoration: const InputDecoration(
+                        decoration:  InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Username',
                           prefixIcon: Icon(
@@ -83,9 +175,9 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                   SizedBox(height: 10),
                   Padding(
-                    padding: const EdgeInsets.symmetric(
+                    padding:  EdgeInsets.symmetric(
                       vertical: 10,
                       horizontal: 20,
                     ),
@@ -102,11 +194,11 @@ class _LoginState extends State<Login> {
                             child: TextField(
                               controller: passcontroller,
                               obscureText: _isPasswordHidden,
-                              style: const TextStyle(
+                              style:  TextStyle(
                                 color: Color.fromARGB(255, 60, 60, 60),
                                 fontSize: 18,
                               ),
-                              decoration: const InputDecoration(
+                              decoration:  InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Password',
                                 prefixIcon: Icon(
@@ -126,76 +218,15 @@ class _LoginState extends State<Login> {
                                   : Icons.visibility,
                               color: const Color.fromARGB(255, 158, 157, 157),
                             ),
-                            onPressed: () {
-                              setState(() {
-                                _isPasswordHidden = !_isPasswordHidden;
-                              });
-                            },
+                            onPressed: togglePasswordVisibility,
                           ),
                         ],
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                   SizedBox(height: 20),
                   TextButton(
-                    onPressed: () async {
-                      String username = namecontroller.text.trim();
-                      String password = passcontroller.text.trim();
-
-                      SharedPreferences pref =
-                          await SharedPreferences.getInstance();
-                      String savedPassword =
-                          pref.getString("user_${username}_password") ?? "";
-
-                      if (username.isEmpty || password.isEmpty) {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text("Incomplete Details"),
-                            content: const Text(
-                              "Please enter both your username and password.",
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: const Text("OK"),
-                              ),
-                            ],
-                          ),
-                        );
-                        return;
-                      }
-
-                      if (password == savedPassword &&
-                          savedPassword.isNotEmpty) {
-                        await pref.setBool("isLoggedIn", true);
-                        await pref.setString("currentUsername", username);
-                        await pref.setString("loggedInUser", username);
-
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                Bottomnavbar(justLoggedIn: true),
-                          ),
-                        );
-                      } else {
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            content: const Text(
-                              "Invalid credentials. Please login with correct account.",
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: const Text("OK"),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-                    },
+                    onPressed: handleLogin,
                     child: Container(
                       height: 35,
                       width: 80,
@@ -203,7 +234,7 @@ class _LoginState extends State<Login> {
                         color: const Color.fromARGB(92, 255, 255, 255),
                         borderRadius: BorderRadius.circular(60),
                         border: Border.all(width: 1, color: Colors.white),
-                        boxShadow: const [
+                        boxShadow:  [
                           BoxShadow(
                             offset: Offset(8, 8),
                             color: Color.fromARGB(15, 0, 0, 0),
@@ -211,7 +242,7 @@ class _LoginState extends State<Login> {
                           ),
                         ],
                       ),
-                      child: const Center(
+                      child:  Center(
                         child: Text(
                           "Login",
                           style: TextStyle(
@@ -231,19 +262,14 @@ class _LoginState extends State<Login> {
             left: 90,
             child: Row(
               children: [
-                const Text(
+                 Text(
                   "Don’t have an account?",
                   style: TextStyle(color: Colors.white),
                 ),
-                const SizedBox(width: 8),
+                 SizedBox(width: 8),
                 InkWell(
-                  onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Register()),
-                    );
-                  },
-                  child: const Text(
+                  onTap: navigateToRegister,
+                  child:  Text(
                     "Sign up",
                     style: TextStyle(color: Color.fromARGB(255, 125, 173, 255)),
                   ),

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:developer'; 
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pr/models/recipe_model.dart';
@@ -14,18 +15,25 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   String searchText = '';
-  String currentUser = "";
+  String currentUser = '';
 
   @override
   void initState() {
     super.initState();
+    log("Search Page Initialized", name: "SearchPage");
     _loadCurrentUser();
+  }
+
+  @override
+  void dispose() {
+    log("Search Page Disposed", name: "SearchPage");
+    super.dispose();
   }
 
   Future<void> _loadCurrentUser() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
-      currentUser = pref.getString("currentUsername") ?? "guest";
+      currentUser = pref.getString("currentUsername") ?? "";
     });
   }
 
@@ -34,122 +42,110 @@ class _SearchState extends State<Search> {
     final recipeBox = Hive.box<RecipeModel>('recipe_db');
 
     return Scaffold(
-      body: Stack(
+      backgroundColor: const Color.fromARGB(255, 217, 226, 236),
+      body: Column(
         children: [
-          // Background gradient
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color.fromARGB(255, 226, 234, 243),
-                  Color.fromARGB(255, 160, 177, 199),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+           SizedBox(height: 70),
+          Padding(
+            padding:  EdgeInsets.all(25),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.4),
+                borderRadius: BorderRadius.circular(60),
+                border: Border.all(color: Colors.white, width: 1),
+              ),
+              child: Padding(
+                padding:  EdgeInsets.only(left: 30),
+                child: TextField(
+                  style:  TextStyle(color: Colors.black, fontSize: 18),
+                  decoration:  InputDecoration(
+                    hintText: "Search recipe...",
+                    border: InputBorder.none,
+                    suffixIcon: Icon(Icons.search, color: Colors.black54),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      searchText = value.trim().toLowerCase();
+                    });
+                    log("Search text changed: $searchText", name: "SearchPage");
+                  },
+                ),
               ),
             ),
           ),
+          Expanded(
+            child: ValueListenableBuilder(
+              valueListenable: recipeBox.listenable(),
+              builder: (context, Box<RecipeModel> box, _) {
+                final Map<dynamic, RecipeModel> allRecipes = box.toMap();
 
-          // Search UI
-          Column(
-            children: [
-              const SizedBox(height: 70),
-              Padding(
-                padding: const EdgeInsets.all(25),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.4),
-                    borderRadius: BorderRadius.circular(60),
-                    border: Border.all(color: Colors.white, width: 1),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 30),
-                    child: TextField(
-                      style: const TextStyle(color: Colors.black, fontSize: 18),
-                      decoration: const InputDecoration(
-                        hintText: "Search recipe...",
-                        border: InputBorder.none,
-                        suffixIcon: Icon(Icons.search, color: Colors.black54),
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          searchText = value.trim().toLowerCase();
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              ),
-
-              // Only show results when user types something
-              if (searchText.isNotEmpty)
-                Expanded(
-                  child: ValueListenableBuilder(
-                    valueListenable: recipeBox.listenable(),
-                    builder: (context, Box<RecipeModel> box, _) {
-                      // Filter by current user + search text
-                      final Map<dynamic, RecipeModel> allRecipes = box.toMap();
-                      final results = allRecipes.entries
-                          .where(
-                            (entry) =>
-                                entry.value.username == currentUser &&
-                                entry.value.name.toLowerCase().contains(
+                final results = allRecipes.entries
+                    .where(
+                      (entry) =>
+                          entry.value.username == currentUser &&
+                          (searchText.isEmpty
+                              ? true
+                              : entry.value.name.toLowerCase().startsWith(
                                   searchText,
-                                ),
-                          )
-                          .toList();
+                                )),
+                    )
+                    .toList();
 
-                      if (results.isEmpty) {
-                        return const Center(
-                          child: Text(
-                            "No recipes found",
-                            style: TextStyle(fontSize: 16),
+                log(
+                  "Found ${results.length} search results for user $currentUser with searchText '$searchText'",
+                  name: "SearchPage",
+                );
+
+                if (results.isEmpty) {
+                  return Center(
+                    child: Image.asset(
+                      "assets/images/Your paragraph text (5).png",
+                    ),
+                  );
+                }
+
+                return ListView.builder(
+                  itemCount: results.length,
+                  itemBuilder: (context, index) {
+                    final recipe = results[index].value;
+                    final key = results[index].key;
+
+                    return ListTile(
+                      leading: recipe.imagePath.isNotEmpty
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(6),
+                              child: Image.file(
+                                File(recipe.imagePath),
+                                width: 50,
+                                height: 50,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          :  Icon(Icons.image, size: 40),
+                      title: Text(
+                        recipe.name,
+                        style:  TextStyle(fontWeight: FontWeight.w500),
+                      ),
+                      onTap: () {
+                        log(
+                          "Tapped recipe: ${recipe.name} (key: $key) by $currentUser",
+                          name: "SearchPage",
+                        );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RecipeDetailPage(
+                              recipe: recipe,
+                              recipeKey: key,
+                            ),
                           ),
                         );
-                      }
-
-                      return ListView.builder(
-                        itemCount: results.length,
-                        itemBuilder: (context, index) {
-                          final recipe = results[index].value;
-                          final key = results[index].key;
-
-                          return ListTile(
-                            leading: recipe.imagePath.isNotEmpty
-                                ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(6),
-                                    child: Image.file(
-                                      File(recipe.imagePath),
-                                      width: 50,
-                                      height: 50,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  )
-                                : const Icon(Icons.image, size: 40),
-                            title: Text(
-                              recipe.name,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => RecipeDetailPage(
-                                    recipe: recipe,
-                                    recipeKey: key,
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
-            ],
+                      },
+                    );
+                  },
+                );
+              },
+            ),
           ),
         ],
       ),

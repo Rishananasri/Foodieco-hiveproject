@@ -1,8 +1,10 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:pr/models/recipe_model.dart';
 import 'package:pr/screens/login.dart';
-import 'package:pr/widget/carousel-slider.dart';
 import 'package:pr/widget/home-widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -17,10 +19,16 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    log("Home Page Initialized", name: "HomePage");
     _loadCurrentUser();
   }
 
-  // Load the current logged-in username
+  @override
+  void dispose() {
+    log("Home Page Disposed", name: "HomePage");
+    super.dispose();
+  }
+
   Future<void> _loadCurrentUser() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     setState(() {
@@ -28,15 +36,16 @@ class _HomeState extends State<Home> {
     });
   }
 
-  // Logout function
   Future<void> logoutUser(BuildContext context) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     await pref.setBool("isLoggedIn", false);
     await pref.remove("currentUsername");
 
+    log("User logged out: $currentUser", name: "HomePage");
+
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const Login()),
+      MaterialPageRoute(builder: (context) => Login()),
     );
   }
 
@@ -46,15 +55,14 @@ class _HomeState extends State<Home> {
       backgroundColor: const Color.fromARGB(255, 217, 226, 236),
       body: Column(
         children: [
-          const SizedBox(height: 20),
-          // Top App Bar
+          SizedBox(height: 20),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 7),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 30),
+                  padding: EdgeInsets.only(top: 30),
                   child: Image.asset(
                     "assets/images/Foodieco-removebg-preview.png",
                     height: 90,
@@ -62,31 +70,31 @@ class _HomeState extends State<Home> {
                     fit: BoxFit.contain,
                   ),
                 ),
-                const Spacer(),
+                Spacer(),
                 Padding(
-                  padding: const EdgeInsets.only(top: 30),
+                  padding: EdgeInsets.only(top: 30),
                   child: PopupMenuButton<String>(
-                    icon: const Icon(Icons.more_vert, color: Colors.black),
+                    icon: Icon(Icons.more_vert, color: Colors.black),
                     onSelected: (value) {
                       if (value == 'log out') {
                         showDialog(
                           context: context,
                           builder: (context) => AlertDialog(
-                            title: const Text("Log out"),
-                            content: const Text(
+                            title:  Text("Log out"),
+                            content:  Text(
                               "Are you sure you want to log out?",
                             ),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context),
-                                child: const Text("Cancel"),
+                                child:  Text("Cancel"),
                               ),
                               TextButton(
                                 onPressed: () {
                                   Navigator.pop(context);
                                   logoutUser(context);
                                 },
-                                child: const Text(
+                                child: Text(
                                   "Log out",
                                   style: TextStyle(color: Colors.red),
                                 ),
@@ -97,7 +105,7 @@ class _HomeState extends State<Home> {
                       }
                     },
                     itemBuilder: (BuildContext context) => [
-                      const PopupMenuItem<String>(
+                       PopupMenuItem<String>(
                         value: 'log out',
                         child: Row(
                           children: [
@@ -113,20 +121,22 @@ class _HomeState extends State<Home> {
               ],
             ),
           ),
-
-          // Main Body
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // Carousel Slider
-                  const SizedBox(height: 220, child: CarouselDemo()),
-                  const SizedBox(height: 50),
-
-                  // Categories (pass current user for per-user filtering)
-                  category(context, currentUser),
-
-                  const SizedBox(height: 70),
+                   SizedBox(height: 50),
+                  FutureBuilder(
+                    future: Hive.openBox<RecipeModel>('recipe_db'),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return  Center(child: CircularProgressIndicator());
+                      } else {
+                        return category(context, currentUser);
+                      }
+                    },
+                  ),
+                   SizedBox(height: 70),
                 ],
               ),
             ),

@@ -8,7 +8,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
 
-  // Register adapters
   if (!Hive.isAdapterRegistered(NoteModelAdapter().typeId)) {
     Hive.registerAdapter(NoteModelAdapter());
   }
@@ -16,8 +15,6 @@ Future<void> main() async {
     Hive.registerAdapter(RecipeModelAdapter());
   }
 
-
-  // Open fresh boxes
   await Hive.openBox<NoteModel>('note_db');
   await Hive.openBox<RecipeModel>('recipe_db');
 

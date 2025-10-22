@@ -9,7 +9,7 @@ Future<void> showWelcomeDialog(BuildContext context, String username,{String?txt
         backgroundColor: const Color.fromARGB(101, 0, 0, 0),
         child: Container(
           height: 200,
-          padding: const EdgeInsets.all(20),
+          padding:  EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: const Color.fromARGB(255, 217, 226, 236),
             borderRadius: BorderRadius.circular(20),

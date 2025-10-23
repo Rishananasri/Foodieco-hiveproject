@@ -112,13 +112,16 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
             },
             itemBuilder: (context) => [
               PopupMenuItem(value: 'edit', child: Text('Edit')),
-              PopupMenuItem(value: 'delete', child: Text('Delete')),
+              PopupMenuItem(
+                value: 'delete',
+                child: Text('Delete', style: TextStyle(color: Colors.red)),
+              ),
             ],
           ),
         ],
       ),
       body: Padding(
-        padding:  EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,10 +137,10 @@ class _RecipeDetailPageState extends State<RecipeDetailPage> {
                     height: 200,
                   ),
                 ),
-               SizedBox(height: 20),
+              SizedBox(height: 20),
               Text(
                 widget.recipe.description,
-                style:  TextStyle(fontSize: 16, height: 1.6),
+                style: TextStyle(fontSize: 16, height: 1.6),
               ),
             ],
           ),

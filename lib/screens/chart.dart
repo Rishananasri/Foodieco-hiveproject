@@ -1,4 +1,4 @@
-import 'dart:developer'; 
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -69,6 +69,7 @@ class _ChartState extends State<Chart> {
     final recipeBox = Hive.box<RecipeModel>('recipe_db');
 
     return Scaffold(
+      appBar: AppBar(backgroundColor: const Color.fromARGB(255, 217, 226, 236)),
       backgroundColor: const Color.fromARGB(255, 217, 226, 236),
       body: ValueListenableBuilder(
         valueListenable: recipeBox.listenable(),
@@ -159,16 +160,16 @@ class _ChartState extends State<Chart> {
                   ),
                 ),
               ),
-               SizedBox(height: 20),
+              SizedBox(height: 20),
               Text(
                 touchedIndex >= 0 ? filteredLabels[touchedIndex] : '',
-                style:  TextStyle(
+                style: TextStyle(
                   fontSize: 18,
                   color: Colors.black87,
                   fontWeight: FontWeight.w500,
                 ),
               ),
-               SizedBox(height: 20),
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -176,7 +177,7 @@ class _ChartState extends State<Chart> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: firstHalf.map((i) {
                       return Padding(
-                        padding:  EdgeInsets.symmetric(vertical: 6),
+                        padding: EdgeInsets.symmetric(vertical: 6),
                         child: Row(
                           children: [
                             Container(
@@ -187,22 +188,22 @@ class _ChartState extends State<Chart> {
                                 borderRadius: BorderRadius.circular(3),
                               ),
                             ),
-                             SizedBox(width: 8),
+                            SizedBox(width: 8),
                             Text(
                               '${filteredLabels[i]} ',
-                              style:  TextStyle(fontSize: 14),
+                              style: TextStyle(fontSize: 14),
                             ),
                           ],
                         ),
                       );
                     }).toList(),
                   ),
-                   SizedBox(width: 100),
+                  SizedBox(width: 100),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: secondHalf.map((i) {
                       return Padding(
-                        padding:  EdgeInsets.symmetric(vertical: 6),
+                        padding: EdgeInsets.symmetric(vertical: 6),
                         child: Row(
                           children: [
                             Container(
@@ -213,7 +214,7 @@ class _ChartState extends State<Chart> {
                                 borderRadius: BorderRadius.circular(3),
                               ),
                             ),
-                             SizedBox(width: 8),
+                            SizedBox(width: 8),
                             Text(
                               '${filteredLabels[i]} ',
                               style: const TextStyle(fontSize: 14),

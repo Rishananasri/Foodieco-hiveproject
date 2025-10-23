@@ -25,7 +25,7 @@ class Notes extends StatelessWidget {
         }
 
         return ListView.separated(
-          padding:  EdgeInsets.all(12),
+          padding: EdgeInsets.all(12),
           itemBuilder: (ctx, index) {
             final data = noteList[index];
             final key = Hive.box<NoteModel>('note_db').keyAt(index);
@@ -35,7 +35,7 @@ class Notes extends StatelessWidget {
                 color: const Color.fromARGB(86, 255, 255, 255),
                 borderRadius: BorderRadius.circular(12),
               ),
-              padding:  EdgeInsets.all(16),
+              padding: EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -45,7 +45,7 @@ class Notes extends StatelessWidget {
                       Expanded(
                         child: Text(
                           data.title,
-                          style:  TextStyle(
+                          style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
@@ -72,7 +72,7 @@ class Notes extends StatelessWidget {
                               context: context,
                               builder: (_) => AlertDialog(
                                 title: Text("Delete Note"),
-                                content:  Text(
+                                content: Text(
                                   "Are you sure you want to delete this note?",
                                 ),
                                 actions: [
@@ -84,7 +84,7 @@ class Notes extends StatelessWidget {
                                       );
                                       Navigator.of(context).pop();
                                     },
-                                    child:  Text("Cancel"),
+                                    child: Text("Cancel"),
                                   ),
                                   TextButton(
                                     onPressed: () {
@@ -95,7 +95,7 @@ class Notes extends StatelessWidget {
                                       );
                                       Navigator.of(context).pop();
                                     },
-                                    child:  Text("OK"),
+                                    child: Text("OK"),
                                   ),
                                 ],
                               ),
@@ -103,29 +103,29 @@ class Notes extends StatelessWidget {
                           }
                         },
                         itemBuilder: (context) => [
-                           PopupMenuItem(
-                            value: 'edit',
-                            child: Text("Edit"),
-                          ),
-                           PopupMenuItem(
+                          PopupMenuItem(value: 'edit', child: Text("Edit")),
+                          PopupMenuItem(
                             value: 'delete',
-                            child: Text("Delete"),
+                            child: Text(
+                              "Delete",
+                              style: TextStyle(color: Colors.red),
+                            ),
                           ),
                         ],
-                        icon:  Icon(Icons.more_vert),
+                        icon: Icon(Icons.more_vert),
                       ),
                     ],
                   ),
-                   SizedBox(height: 8),
+                  SizedBox(height: 8),
                   Text(
                     data.content,
-                    style:  TextStyle(fontSize: 15, color: Colors.black87),
+                    style: TextStyle(fontSize: 15, color: Colors.black87),
                   ),
                 ],
               ),
             );
           },
-          separatorBuilder: (ctx, index) =>  SizedBox(height: 12),
+          separatorBuilder: (ctx, index) => SizedBox(height: 12),
           itemCount: noteList.length,
         );
       },

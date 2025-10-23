@@ -36,10 +36,7 @@ class _RecipieState extends State<Recipie> {
         backgroundColor: const Color.fromARGB(255, 217, 226, 236),
         title: Text(
           widget.selectedCategory,
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w400,
-          ),
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w400),
         ),
       ),
       body: ValueListenableBuilder(
@@ -60,10 +57,10 @@ class _RecipieState extends State<Recipie> {
           );
 
           if (filtered.isEmpty) {
-            log("No recipes found", name: "Recipie", level: 800);
-            return  Center(
-              child: Text("No recipes found in this category"),
-            );
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (mounted) Navigator.pop(context);
+            });
+            return SizedBox();
           }
 
           return Padding(
@@ -120,9 +117,7 @@ class _RecipieState extends State<Recipie> {
                               child: Text(
                                 recipe.name,
                                 textAlign: TextAlign.center,
-                                style:  TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                ),
+                                style: TextStyle(fontWeight: FontWeight.w400),
                               ),
                             ),
                           ],
@@ -133,7 +128,7 @@ class _RecipieState extends State<Recipie> {
                     Positioned(
                       right: 0,
                       child: PopupMenuButton<String>(
-                        icon:  Icon(Icons.more_vert),
+                        icon: Icon(Icons.more_vert),
                         onSelected: (value) async {
                           if (value == 'edit') {
                             log(
@@ -156,8 +151,8 @@ class _RecipieState extends State<Recipie> {
                             final shouldDelete = await showDialog<bool>(
                               context: context,
                               builder: (_) => AlertDialog(
-                                title:  Text("Delete Recipe"),
-                                content:  Text(
+                                title: Text("Delete Recipe"),
+                                content: Text(
                                   "Are you sure you want to delete this?",
                                 ),
                                 actions: [
@@ -192,9 +187,15 @@ class _RecipieState extends State<Recipie> {
                             }
                           }
                         },
-                        itemBuilder: (context) =>  [
+                        itemBuilder: (context) => [
                           PopupMenuItem(value: 'edit', child: Text('Edit')),
-                          PopupMenuItem(value: 'delete', child: Text('Delete')),
+                          PopupMenuItem(
+                            value: 'delete',
+                            child: Text(
+                              'Delete',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ),
                         ],
                       ),
                     ),

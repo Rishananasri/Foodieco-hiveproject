@@ -12,6 +12,9 @@ class Note extends StatefulWidget {
 }
 
 class _NoteState extends State<Note> {
+  double fabX = 335; 
+  double fabY = 670; 
+
   @override
   void initState() {
     super.initState();
@@ -31,33 +34,47 @@ class _NoteState extends State<Note> {
           child: Text("Notes", style: TextStyle(fontWeight: FontWeight.w500)),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children:  [
-            SizedBox(height: 10),
-            SizedBox(height: 740, child: Notes()),
-          ],
-        ),
+
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height: 10),
+                SizedBox(height: 740, child: Notes()),
+              ],
+            ),
+          ),
+
+          Positioned(
+            left: fabX, 
+            top: fabY, 
+            child: GestureDetector(
+              onPanUpdate: (details) {
+                setState(() {
+                  fabX += details.delta.dx;
+                  fabY += details.delta.dy;
+                });
+              },
+              child: FloatingActionButton(
+                onPressed: () {
+                  log(
+                    "FloatingActionButton pressed: navigating to AddNoteScreen",
+                    name: "NoteScreen",
+                  );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AddNoteScreen()),
+                  );
+                },
+                backgroundColor: const Color.fromARGB(255, 60, 124, 198),
+                shape: CircleBorder(),
+                child: Icon(Icons.add, color: Colors.white, size: 30),
+              ),
+            ),
+          ),
+        ],
       ),
-      floatingActionButton: Padding(
-        padding: EdgeInsets.only(bottom: 70),
-        child: FloatingActionButton(
-          onPressed: () {
-            log(
-              "FloatingActionButton pressed: navigating to AddNoteScreen",
-              name: "NoteScreen",
-            );
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) =>  AddNoteScreen()),
-            );
-          },
-          backgroundColor: const Color.fromARGB(255, 60, 124, 198),
-          shape:  CircleBorder(),
-          child:  Icon(Icons.add, color: Colors.white, size: 30),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }

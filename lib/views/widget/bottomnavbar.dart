@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:pr/notes/shownotes.dart';
 import 'package:pr/recipe/addrecipe.dart';
-import 'package:pr/screens/search.dart';
-import 'package:pr/widget/welcome.dart';
+import 'package:pr/views/screens/search.dart';
+import 'package:pr/views/widget/welcome.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:pr/screens/chart.dart';
-import 'package:pr/screens/home.dart';
+import 'package:pr/views/screens/home.dart';
 
 class Bottomnavbar extends StatefulWidget {
   final bool justLoggedIn;

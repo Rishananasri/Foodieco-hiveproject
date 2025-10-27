@@ -12,7 +12,6 @@ Future<String?> getCurrentUserId() async {
   return prefs.getString('currentUsername');
 }
 
-
 Future<void> addNote(NoteModel value) async {
   final userId = await getCurrentUserId();
   if (userId == null) return;

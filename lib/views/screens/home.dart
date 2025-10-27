@@ -1,9 +1,9 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:pr/models/recipe_model.dart';
-import 'package:pr/screens/chart.dart';
-import 'package:pr/screens/login.dart';
-import 'package:pr/widget/home-widgets.dart';
+import 'package:pr/views/screens/chart.dart';
+import 'package:pr/views/screens/login.dart';
+import 'package:pr/views/widget/home-widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 

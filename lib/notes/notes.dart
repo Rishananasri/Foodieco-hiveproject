@@ -32,7 +32,7 @@ class Notes extends StatelessWidget {
 
             return Container(
               decoration: BoxDecoration(
-                color: const Color.fromARGB(86, 255, 255, 255),
+                color: const Color.fromARGB(103, 138, 163, 203),
                 borderRadius: BorderRadius.circular(12),
               ),
               padding: EdgeInsets.all(16),

@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:pr/models/note_model.dart';
 import 'package:pr/service/functions.dart';
-import 'package:pr/widget/bottomnavbar.dart';
+import 'package:pr/views/widget/bottomnavbar.dart';
 
 class AddNoteScreen extends StatefulWidget {
   const AddNoteScreen({super.key});

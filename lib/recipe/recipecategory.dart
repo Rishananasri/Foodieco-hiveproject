@@ -91,10 +91,12 @@ class _RecipieState extends State<Recipie> {
                           ),
                         );
                       },
-                      child: Card(
-                        shape: RoundedRectangleBorder(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(103, 138, 163, 203),
                           borderRadius: BorderRadius.circular(12),
                         ),
+
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
@@ -117,7 +119,6 @@ class _RecipieState extends State<Recipie> {
                               child: Text(
                                 recipe.name,
                                 textAlign: TextAlign.center,
-                                style: TextStyle(fontWeight: FontWeight.w400),
                               ),
                             ),
                           ],
@@ -128,7 +129,7 @@ class _RecipieState extends State<Recipie> {
                     Positioned(
                       right: 0,
                       child: PopupMenuButton<String>(
-                        icon: Icon(Icons.more_vert),
+                        icon: Icon(Icons.more_vert, color: Colors.white),
                         onSelected: (value) async {
                           if (value == 'edit') {
                             log(

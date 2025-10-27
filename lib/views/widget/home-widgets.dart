@@ -1,4 +1,4 @@
-import 'dart:developer'; 
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pr/models/recipe_model.dart';
@@ -30,16 +30,23 @@ Widget ctrow(
       height: 160,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: const Color.fromARGB(60, 255, 255, 255),
+        boxShadow: [
+          BoxShadow(
+            offset: Offset(5, 5),
+            color: const Color.fromARGB(43, 0, 0, 0),
+            blurRadius: 10,
+          ),
+        ],
+        color: const Color.fromARGB(103, 138, 163, 203),
         border: Border.all(
-          color: const Color.fromARGB(253, 255, 255, 255),
+          color: const Color.fromARGB(252, 232, 239, 246),
           width: 1.5,
         ),
       ),
       child: Column(
         children: [
           Padding(
-            padding:  EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0),
             child: SizedBox(
               height: 100,
               width: 170,
@@ -52,13 +59,13 @@ Widget ctrow(
               ),
             ),
           ),
-           SizedBox(height: 8),
+          SizedBox(height: 8),
           Text(
             label ?? "Starters",
-            style:  TextStyle(
+            style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w600,
-              color: Color.fromARGB(255, 107, 106, 106),
+              color: Colors.white,
             ),
           ),
         ],
@@ -99,7 +106,7 @@ Widget category(BuildContext context, String currentUser) {
       }).toList();
 
       if (filteredCategories.isEmpty) {
-        return  Padding(
+        return Padding(
           padding: EdgeInsets.symmetric(vertical: 20),
           child: Center(
             child: Image(
@@ -134,13 +141,13 @@ Widget category(BuildContext context, String currentUser) {
                   )
                   .toList(),
             ),
-             SizedBox(width: 20),
+            SizedBox(width: 20),
             Column(
               children: filteredCategories
                   .sublist((filteredCategories.length / 2).ceil())
                   .map(
                     (cat) => Padding(
-                      padding:  EdgeInsets.only(bottom: 20),
+                      padding: EdgeInsets.only(bottom: 20),
                       child: ctrow(
                         context,
                         label: cat["label"],

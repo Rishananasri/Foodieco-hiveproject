@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pr/models/note_model.dart';
 import 'package:pr/models/recipe_model.dart';
-import 'package:pr/screens/splash.dart';
+import 'package:pr/views/screens/splash.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

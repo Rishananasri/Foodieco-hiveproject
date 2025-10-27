@@ -1,7 +1,7 @@
 import 'dart:developer'; 
 import 'package:flutter/material.dart';
-import 'package:pr/screens/register.dart';
-import 'package:pr/widget/bottomnavbar.dart';
+import 'package:pr/views/screens/register.dart';
+import 'package:pr/views/widget/bottomnavbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {

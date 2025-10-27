@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-part 'recipe_model.g.dart';
+part 'adapters/recipe_model.g.dart';
 
 @HiveType(typeId: 2)
 class RecipeModel {

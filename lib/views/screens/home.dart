@@ -36,8 +36,7 @@ class _HomeState extends State<Home> {
       currentUser = pref.getString("currentUsername") ?? "";
     });
   }
-
-  Future<void> logoutUser(BuildContext context) async {
+Future<void> logoutUser(BuildContext context, dynamic currentUser) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     await pref.setBool("isLoggedIn", false);
     await pref.remove("currentUsername");
@@ -104,7 +103,7 @@ class _HomeState extends State<Home> {
                                   TextButton(
                                     onPressed: () {
                                       Navigator.pop(context);
-                                      logoutUser(context);
+                                      logoutUser(context, currentUser);
                                     },
                                     child: Text(
                                       "Log out",
